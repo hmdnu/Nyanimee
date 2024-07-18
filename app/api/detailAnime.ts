@@ -40,6 +40,7 @@ export async function getDetailAnime(animeTitle: string) {
 
     const keys = Object.keys(detailAnime) as (keyof TDetailAnime)[];
 
+    // populate detailAnime instance
     for (let i = 0; i < temp.length; i++) {
       detailAnime[keys[i]] = temp[i] as never;
     }

@@ -3,23 +3,32 @@ import { Env } from "~/utils/env";
 import axios, { AxiosError } from "axios";
 import { TOngoingAnimes } from "~/types";
 
+const HTMLTags = {
+  animeCards: ".venutama .rseries .rapi",
+  card: ".detpost",
+  title: ".thumb .thumbz h2",
+  coverImg: ".thumb .thumbz img",
+  href: ".thumb a",
+  episode: ".epz",
+};
+
 export async function getOngoingAnime() {
   try {
     const page = await axios.get(Env.baseUrl || "");
 
     const $ = cheerio.load(page.data);
-    const animeCards = $(".venutama .rseries .rapi").first();
+    const animeCards = $(HTMLTags.animeCards).first();
 
     const onGoingAnimes: TOngoingAnimes[] = [];
 
     animeCards.each((i, e) => {
       $(e)
-        .find(".detpost")
+        .find(HTMLTags.card)
         .each((i, e) => {
-          const title = $(e).find(".thumb .thumbz h2").text().trimStart();
-          const coverImg = $(e).find(".thumb .thumbz img").attr("src") || "";
-          const href = $(e).find(".thumb a").attr("href") || "";
-          const episode = $(e).find(".epz").text().trimStart();
+          const title = $(e).find(HTMLTags.title).text().trimStart();
+          const coverImg = $(e).find(HTMLTags.coverImg).attr("src") || "";
+          const href = $(e).find(HTMLTags.href).attr("href") || "";
+          const episode = $(e).find(HTMLTags.episode).text().trimStart();
 
           onGoingAnimes.push({ title, episode, href, coverImg });
         });

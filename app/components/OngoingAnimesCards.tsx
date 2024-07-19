@@ -4,25 +4,24 @@ import { Env } from "~/utils/env";
 
 export default function OngoingAnimesCards({ ongoingAnimes }: { ongoingAnimes: TOngoingAnimes[] }) {
   return (
-    <div className="grid grid-cols-5 place-items-center gap-5">
+    <ul className="grid grid-cols-5 max-sm:grid-cols-1 max-xl:grid-cols-3 place-items-center gap-5">
       {ongoingAnimes.map((anime) => (
-        <Link
+        <li
           key={anime.title}
-          to={anime.href.replace(Env.baseUrl, "")}
-          target="_blank"
-          rel="noreferrer"
-          className="bg-secondary rounded-[10px] w-[300px] flex flex-col items-center p-6"
+          className="bg-secondary-hover hover:bg-secondary transition-all rounded-[5px] w-full h-full flex flex-col justify-center px-2 py-5"
         >
-          <div>
-            <img src={anime.coverImg} alt={anime.title} className="w-[300px] h-[350px] rounded-[10px]" />
+          <Link to={anime.href.replace(Env.baseUrl, "")}>
+            <div>
+              <img src={anime.coverImg} alt={anime.title} className="w-[90%] rounded-[5px] mx-auto" />
 
-            <div className="pt-5">
-              <h3 className="heading-3 line-clamp-1 mb-1">{anime.title}</h3>
-              <h4 className="heading-4">{anime.episode}</h4>
+              <div className="pt-5 w-[90%] mx-auto">
+                <h3 className="text-[18px] font-bold line-clamp-1 mb-1">{anime.title}</h3>
+                <h4 className="heading-4">{anime.episode}</h4>
+              </div>
             </div>
-          </div>
-        </Link>
+          </Link>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }

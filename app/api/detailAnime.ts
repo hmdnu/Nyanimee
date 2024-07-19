@@ -1,5 +1,5 @@
 import * as cheerio from "cheerio";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { Env } from "~/utils/env";
 import { TDetailAnime } from "~/types";
 
@@ -15,14 +15,15 @@ export async function getDetailAnime(animeTitle: string) {
       japanese: "",
       score: "",
       producer: "",
+      type: "",
       status: "",
       totalEpisode: "",
-      type: "",
       duration: "",
       releaseDate: "",
       studio: "",
       genres: "",
       coverImg: "",
+      episodes: [],
     };
 
     if (!page || !details) return detailAnime;
@@ -48,14 +49,18 @@ export async function getDetailAnime(animeTitle: string) {
     // populate coverImg instance
     detailAnime.coverImg = details.find("img").attr("src") || "";
 
+    // populate episodes
+    $(".episodelist ul li").each((_, e) => {
+      const episode = $(e).find("a").text();
+      const date = $(e).find(".zeebr").text();
+      const href = $(e).find("a").attr("href") || "";
+
+      detailAnime.episodes?.push({ episode, date, href });
+    });
+
     return detailAnime;
   } catch (error) {
     console.log(error);
-    if (error instanceof AxiosError) {
-      return {
-        error: error.message,
-        status: error.status,
-      };
-    }
+    return error;
   }
 }

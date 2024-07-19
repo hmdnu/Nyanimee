@@ -5,7 +5,9 @@ export default function Nav() {
   return (
     <nav className="fixed w-full bg-primary">
       <div className="w-[90%] mx-auto py-5 flex justify-between items-center ">
-        <h1 className="heading-1">OtakuDl</h1>
+        <Link to={"/"} className="heading-1">
+          OtakuDl
+        </Link>
 
         {/* lists */}
         <div className="flex gap-7 items-center">

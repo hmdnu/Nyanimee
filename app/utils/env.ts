@@ -1,3 +1,3 @@
 export const Env = {
-  baseUrl: process.env.BASE_URL || "",
+  baseUrl: "https://otakudesu.cloud",
 };

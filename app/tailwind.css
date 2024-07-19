@@ -1,11 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: "Nunito Sans", sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 
 /* width */
@@ -30,7 +30,7 @@ body {
 
 @layer components {
   .base {
-    @apply w-[85%] pt-[130px] py-10 mx-auto;
+    @apply w-[90%] pt-[130px] py-10 mx-auto;
   }
 }
 

@@ -6,7 +6,9 @@ export default {
     extend: {
       colors: {
         primary: "#282C3A",
+        "primary-hover": "#3F465F",
         secondary: "#1F222E",
+        "secondary-hover": "#33374b",
         tertiary: "#33344E",
       },
     },

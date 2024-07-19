@@ -10,9 +10,9 @@ export type TDetailAnime = {
   japanese: string;
   score: string;
   producer: string;
+  type: string;
   status: string;
   totalEpisode: string;
-  type: string;
   duration: string;
   releaseDate: string;
   studio: string;
@@ -25,9 +25,26 @@ export type TDetailAnime = {
 export type TDetailAnimeEpisodes = {
   episode: string;
   date: string;
+  href: string;
 };
 
 export type TError = {
   error: string;
   status: number | undefined;
+};
+
+export type TDownloadAnimeUrl = {
+  title: string;
+  downloadUrl: TDownloadUrl[];
+};
+
+export type TDownloadUrl = {
+  resolution: string;
+  provider: TDownloadProvider[];
+  size: string;
+};
+
+export type TDownloadProvider = {
+  provider: string;
+  href: string;
 };

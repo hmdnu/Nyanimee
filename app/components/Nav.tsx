@@ -1,10 +1,23 @@
 import { Link, Form } from "@remix-run/react";
+import { useEffect, useState } from "react";
 import { Navlinks } from "~/constant";
 
 export default function Nav() {
+  const [navBlur, setNavBlur] = useState("bg-primary");
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (document.documentElement.scrollTop > 0) {
+        setNavBlur("bg-tertiary");
+        return;
+      }
+      setNavBlur("bg-primary");
+    });
+  }, []);
+
   return (
-    <nav className="fixed w-full bg-primary">
-      <div className="w-[90%] mx-auto py-5 flex justify-between items-center ">
+    <nav className={`fixed w-full ${navBlur} transition-all`}>
+      <div className="w-[90%] mx-auto py-5 flex justify-between items-center">
         <Link to={"/"} className="heading-1">
           OtakuDl
         </Link>

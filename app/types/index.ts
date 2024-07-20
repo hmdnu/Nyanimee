@@ -3,6 +3,7 @@ export type TOngoingAnimes = {
   episode: string;
   coverImg: string;
   href: string;
+  day: string;
 };
 
 export type TDetailAnime = {

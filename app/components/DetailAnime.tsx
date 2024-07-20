@@ -28,13 +28,13 @@ export default function DetailAnime({ anime }: { anime: TDetailAnime }) {
       <div className="mt-[40px]">
         <h1 className="heading-1 mb-[40px]">Episodes</h1>
 
-        <ul className="bg-tertiary p-10 rounded-[10px]">
+        <ul className="bg-tertiary p-8 rounded-[10px] flex flex-col gap-3">
           {anime.episodes?.map((anime) => (
-            <li key={anime.episode} className="heading-3 mb-5">
+            <li key={anime.episode} className="heading-3">
               <Link to={`/download${anime.href.replace(Env.baseUrl, "")}`}>
                 <div className="bg-primary hover:bg-primary-hover rounded-[10px] px-[20px] py-[16px] flex justify-between items-center transition-all">
-                  <h2>{anime.episode}</h2>
-                  <h2>{anime.date}</h2>
+                  <h3>{anime.episode}</h3>
+                  <h3>{anime.date.replaceAll(",", " ")}</h3>
                 </div>
               </Link>
             </li>

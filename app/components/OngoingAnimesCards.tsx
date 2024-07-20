@@ -15,8 +15,11 @@ export default function OngoingAnimesCards({ ongoingAnimes }: { ongoingAnimes: T
               <img src={anime.coverImg} alt={anime.title} className="w-[90%] rounded-[5px] mx-auto" />
 
               <div className="pt-5 w-[90%] mx-auto">
-                <h3 className="text-[18px] font-bold line-clamp-1 mb-1">{anime.title}</h3>
-                <h4 className="heading-4">{anime.episode}</h4>
+                <h3 className="heading-3 line-clamp-1 mb-2">{anime.title}</h3>
+                <div className="flex justify-between">
+                  <h4 className="heading-4">{anime.episode}</h4>
+                  <h4 className="heading-4">{anime.day}</h4>
+                </div>
               </div>
             </div>
           </Link>

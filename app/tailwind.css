@@ -36,7 +36,7 @@ body {
 
 @layer base {
   .heading-1 {
-    @apply font-bold text-[32px];
+    @apply font-bold text-[28px];
   }
 
   .heading-2 {
@@ -44,7 +44,7 @@ body {
   }
 
   .heading-3 {
-    @apply font-bold text-[20px];
+    @apply font-bold text-[18px];
   }
 
   .heading-4 {

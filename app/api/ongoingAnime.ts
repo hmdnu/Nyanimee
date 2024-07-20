@@ -10,6 +10,7 @@ const HTMLTags = {
   coverImg: ".thumb .thumbz img",
   href: ".thumb a",
   episode: ".epz",
+  day: ".epztipe",
 };
 
 export async function getOngoingAnime() {
@@ -29,8 +30,9 @@ export async function getOngoingAnime() {
           const coverImg = $(e).find(HTMLTags.coverImg).attr("src") || "";
           const href = $(e).find(HTMLTags.href).attr("href") || "";
           const episode = $(e).find(HTMLTags.episode).text().trimStart();
+          const day = $(e).find(HTMLTags.day).text();
 
-          onGoingAnimes.push({ title, episode, href, coverImg });
+          onGoingAnimes.push({ title, episode, day, href, coverImg });
         });
     });
 

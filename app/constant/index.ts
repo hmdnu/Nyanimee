@@ -26,3 +26,5 @@ export const AnimeInfos = [
   { text: "Studio" },
   { text: "Genres" },
 ];
+
+export const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

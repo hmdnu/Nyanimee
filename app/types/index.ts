@@ -36,16 +36,34 @@ export type TError = {
 
 export type TDownloadAnimeUrl = {
   title: string;
+  streamUrl: string;
   downloadUrl: TDownloadUrl[];
 };
 
 export type TDownloadUrl = {
   resolution: string;
-  provider: TDownloadProvider[];
+  providers: TDownloadProvider[];
   size: string;
 };
 
 export type TDownloadProvider = {
   provider: string;
+  href: string;
+};
+
+export type TSearchAnime = {
+  title: string;
+  status: string;
+  coverImg: string;
+  href: string;
+};
+
+export type TAnimeLists = {
+  alphabet: string;
+  animes: TAnime[];
+};
+
+export type TAnime = {
+  title: string;
   href: string;
 };

@@ -16,12 +16,20 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const animeEpisode = params.animeEpisode;
+  const type = params.type;
 
-  if (!animeEpisode) throw json("Anime episode not found", { status: 404 });
+  if (!animeEpisode || !type) throw json("Anime episode not found", { status: 404 });
 
-  const downloadUrl = await getAnimeDownloadUrl(animeEpisode);
+  const downloadUrl = await getAnimeDownloadUrl(animeEpisode, type);
 
-  return json({ downloadUrl });
+  return json(
+    { downloadUrl },
+    {
+      headers: {
+        "Cache-Control": "max-age=" + 60 * 60,
+      },
+    }
+  );
 }
 
 export default function AnimeDownloadPage() {

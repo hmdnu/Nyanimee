@@ -1,10 +1,10 @@
 import * as cheerio from "cheerio";
 import { Env } from "~/utils/env";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { TOngoingAnimes } from "~/types";
 
 const HTMLTags = {
-  animeCards: ".venutama .rseries .rapi",
+  ongoingAnime: ".venutama .rseries .rapi",
   card: ".detpost",
   title: ".thumb .thumbz h2",
   coverImg: ".thumb .thumbz img",
@@ -13,37 +13,36 @@ const HTMLTags = {
   day: ".epztipe",
 };
 
-export async function getOngoingAnime() {
-  try {
-    const page = await axios.get(Env.baseUrl || "");
+function extractAnimes(anime: string) {
+  const $ = cheerio.load(anime);
 
-    const $ = cheerio.load(page.data);
-    const animeCards = $(HTMLTags.animeCards).first();
+  const onGoingAnimes: TOngoingAnimes[] = [];
 
-    const onGoingAnimes: TOngoingAnimes[] = [];
+  $(HTMLTags.ongoingAnime).each((i, e) => {
+    $(e)
+      .find(HTMLTags.card)
+      .each((i, e) => {
+        const title = $(e).find(HTMLTags.title).text().trimStart();
+        const coverImg = $(e).find(HTMLTags.coverImg).attr("src") || "";
+        const href = $(e).find(HTMLTags.href).attr("href") || "";
+        const episode = $(e).find(HTMLTags.episode).text().trimStart();
+        const day = $(e).find(HTMLTags.day).text();
 
-    animeCards.each((i, e) => {
-      $(e)
-        .find(HTMLTags.card)
-        .each((i, e) => {
-          const title = $(e).find(HTMLTags.title).text().trimStart();
-          const coverImg = $(e).find(HTMLTags.coverImg).attr("src") || "";
-          const href = $(e).find(HTMLTags.href).attr("href") || "";
-          const episode = $(e).find(HTMLTags.episode).text().trimStart();
-          const day = $(e).find(HTMLTags.day).text();
+        onGoingAnimes.push({ title, coverImg, day, episode, href });
+      });
+  });
 
-          onGoingAnimes.push({ title, episode, day, href, coverImg });
-        });
-    });
+  return onGoingAnimes;
+}
 
-    return onGoingAnimes;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error);
-      return {
-        error: error.message,
-        status: error.status,
-      };
-    }
+export async function getOngoingAnime(query: string) {
+  const page = await axios.get(`${Env.baseUrl}/ongoing-anime/page/${query}` || "");
+
+  if (!page.data) {
+    return [];
   }
+
+  const animes = extractAnimes(page.data);
+
+  return animes;
 }

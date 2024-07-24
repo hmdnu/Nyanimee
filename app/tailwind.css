@@ -52,6 +52,6 @@ body {
   }
 
   .paragraph {
-    @apply font-semibold text-[20px];
+    @apply font-medium text-[16px];
   }
 }

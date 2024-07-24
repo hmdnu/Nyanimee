@@ -1,34 +1,40 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { getOngoingAnime } from "~/api/ongoingAnime";
-import { json } from "@remix-run/node";
-import { useLoaderData, Await } from "@remix-run/react";
-import { TOngoingAnimes } from "~/types";
+import { useLoaderData, Await, defer, json } from "@remix-run/react";
 import { Suspense } from "react";
-import { OngoingAnimesCards } from "~/components/index";
+import { CardSkeleton, OngoingAnime } from "~/components/index";
 
 export const meta: MetaFunction = () => {
   return [{ title: "OtakuDl" }, { name: "description", content: "Welcome to Remix!" }];
 };
 
-export async function loader() {
-  const ongoingAnime = await getOngoingAnime();
-  const maxAge = 60 * 5;
-  return json(ongoingAnime, {
-    headers: {
-      "Cache-Control": "max-age=" + maxAge,
-    },
-  });
+export async function loader({ request }: LoaderFunctionArgs) {
+  const pageQuery = new URL(request.url).searchParams.get("page");
+
+  const ongoingAnime = getOngoingAnime(pageQuery || "1");
+
+  if (!ongoingAnime) throw json("Internal server error", { status: 500 });
+
+  return defer(
+    { ongoingAnime },
+
+    {
+      headers: {
+        "Cache-Control": "max-age=" + 60 * 60,
+      },
+    }
+  );
 }
 
 export default function Index() {
-  const ongoingAnime = useLoaderData<TOngoingAnimes[]>();
+  const { ongoingAnime } = useLoaderData<typeof loader>();
 
   return (
     <>
       <main className="base">
         <h1 className="heading-1 mb-[40px]">Ongoing anime</h1>
-        <Suspense fallback={<div>Loading bro</div>}>
-          <Await resolve={ongoingAnime}>{(animes) => <OngoingAnimesCards ongoingAnimes={animes} />}</Await>
+        <Suspense fallback={<CardSkeleton />}>
+          <Await resolve={ongoingAnime}>{(animes) => <OngoingAnime animes={animes} />}</Await>
         </Suspense>
       </main>
     </>

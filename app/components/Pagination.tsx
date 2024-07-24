@@ -1,8 +1,11 @@
 import { useSearchParams } from "@remix-run/react";
 
-export default function Pagination() {
-  const totalPage = 6;
-  const maxVisiblePages = 4;
+interface PaginationProps {
+  totalPage: number;
+}
+
+export default function Pagination({ totalPage = 6 }: PaginationProps) {
+  const maxVisiblePages = 3;
 
   const [searchParams, setSearchParams] = useSearchParams({ page: String(1) });
   const currentPage = Number(searchParams.get("page"));
@@ -23,14 +26,30 @@ export default function Pagination() {
     setSearchParams({ page: String(setPage) });
   }
 
+  function handleFirst() {
+    setSearchParams({ page: String(1) });
+  }
+
+  function handleLast() {
+    setSearchParams({ page: String(totalPage) });
+  }
+
   return (
     <div className="flex gap-5 justify-center mt-[40px]">
+      <button
+        className="bg-secondary hover:bg-secondary-hover px-3 py-1 rounded-[5px] font-semibold text-lg transition"
+        onClick={handleFirst}
+        disabled={currentPage === 1}
+      >
+        {"<<"}
+      </button>
+
       <button
         className="bg-secondary hover:bg-secondary-hover px-3 py-1 rounded-[5px] font-semibold text-lg transition"
         onClick={handlePrev}
         disabled={currentPage === 1}
       >
-        Prev
+        {"<"}
       </button>
 
       <div className="flex justify-center gap-5">
@@ -53,7 +72,15 @@ export default function Pagination() {
         onClick={handleNext}
         disabled={currentPage === totalPage}
       >
-        Next
+        {">"}
+      </button>
+
+      <button
+        className="bg-secondary hover:bg-secondary-hover px-3 py-1 rounded-[5px] font-semibold text-lg transition"
+        onClick={handleLast}
+        disabled={currentPage === totalPage}
+      >
+        {">>"}
       </button>
     </div>
   );

@@ -36,22 +36,22 @@ body {
 
 @layer base {
   .heading-1 {
-    @apply font-bold text-[28px];
+    @apply font-bold sm:text-[28px] text-[24px];
   }
 
   .heading-2 {
-    @apply font-bold text-[24px];
+    @apply font-bold sm:text-[24px] text-[20px];
   }
 
   .heading-3 {
-    @apply font-bold text-[18px];
+    @apply font-bold sm:text-[18px] text-[16px];
   }
 
   .heading-4 {
-    @apply font-semibold text-[16px];
+    @apply font-semibold sm:text-[16px] text-[14px];
   }
 
   .paragraph {
-    @apply font-medium text-[16px];
+    @apply font-medium sm:text-[16px] text-[14px];
   }
 }

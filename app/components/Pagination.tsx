@@ -1,19 +1,14 @@
-import { useSearchParams } from "@remix-run/react";
+import type { SetURLSearchParams } from "react-router-dom";
 
-interface PaginationProps {
+interface TPaginationProps {
   totalPage: number;
+  currentPage: number;
+  maxVisiblePages: number;
+  setSearchParams: SetURLSearchParams;
 }
 
-export default function Pagination({ totalPage = 6 }: PaginationProps) {
-  const maxVisiblePages = 3;
-
-  const [searchParams, setSearchParams] = useSearchParams({ page: String(1) });
-  const currentPage = Number(searchParams.get("page"));
-
-  const startPage = Math.max(
-    1,
-    Math.min(currentPage - Math.floor(maxVisiblePages / 2), totalPage - maxVisiblePages + 1)
-  );
+export default function Pagination({ totalPage, currentPage, maxVisiblePages, setSearchParams }: TPaginationProps) {
+  const startPage = Math.max(1, Math.min(currentPage - Math.floor(maxVisiblePages / 2), totalPage - maxVisiblePages + 1));
   const endPage = Math.min(startPage + maxVisiblePages - 1, totalPage);
 
   function handlePrev() {
@@ -26,19 +21,11 @@ export default function Pagination({ totalPage = 6 }: PaginationProps) {
     setSearchParams({ page: String(setPage) });
   }
 
-  function handleFirst() {
-    setSearchParams({ page: String(1) });
-  }
-
-  function handleLast() {
-    setSearchParams({ page: String(totalPage) });
-  }
-
   return (
-    <div className="flex gap-5 justify-center mt-[40px]">
+    <div className="flex gap-2 justify-center mt-[40px]">
       <button
         className="bg-secondary hover:bg-secondary-hover px-3 py-1 rounded-[5px] font-semibold text-lg transition"
-        onClick={handleFirst}
+        onClick={() => setSearchParams({ page: String(1) })}
         disabled={currentPage === 1}
       >
         {"<<"}
@@ -52,12 +39,12 @@ export default function Pagination({ totalPage = 6 }: PaginationProps) {
         {"<"}
       </button>
 
-      <div className="flex justify-center gap-5">
+      <div className="flex justify-center gap-2">
         {Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index).map((page) => (
           <button
             key={page}
             onClick={() => setSearchParams({ page: String(page) })}
-            disabled={String(page) === searchParams.get("page")}
+            disabled={String(page) === String(currentPage)}
             className={`${
               currentPage === page ? "bg-tertiary" : "bg-secondary"
             } hover:bg-secondary-hover px-3 py-1 rounded-[5px] font-semibold text-lg transition`}
@@ -77,7 +64,7 @@ export default function Pagination({ totalPage = 6 }: PaginationProps) {
 
       <button
         className="bg-secondary hover:bg-secondary-hover px-3 py-1 rounded-[5px] font-semibold text-lg transition"
-        onClick={handleLast}
+        onClick={() => setSearchParams({ page: String(totalPage) })}
         disabled={currentPage === totalPage}
       >
         {">>"}

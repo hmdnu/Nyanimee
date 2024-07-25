@@ -1,9 +1,13 @@
-import { Link } from "@remix-run/react";
+import { Link, useSearchParams } from "@remix-run/react";
 import { TOngoingAnimes } from "~/types";
 import { Env } from "~/utils/env";
 import Pagination from "./Pagination";
 
 export default function OngoingAnime({ animes }: { animes: TOngoingAnimes[] }) {
+  const [searchParams, setSearchParams] = useSearchParams({ page: String(1) });
+
+  const currentPage = Number(searchParams.get("page"));
+
   return (
     <>
       {animes.length < 1 ? (
@@ -13,15 +17,11 @@ export default function OngoingAnime({ animes }: { animes: TOngoingAnimes[] }) {
           {animes.map((anime) => (
             <li
               key={anime.title}
-              className="bg-secondary-hover hover:bg-secondary transition-all rounded-[5px] w-full h-full flex flex-col justify-center px-2 py-5"
+              className="bg-secondary-hover hover:bg-secondary transition-all rounded-[5px] max-sm:w-[80%] w-full h-full flex flex-col justify-center px-2 py-5"
             >
               <Link to={anime.href.replace(Env.baseUrl, "")} prefetch="intent" rel="prefetch">
                 <div>
-                  <img
-                    src={anime.coverImg}
-                    alt={anime.title}
-                    className="max-sm:w-[50%] w-[90%] rounded-[5px] mx-auto"
-                  />
+                  <img src={anime.coverImg} alt={anime.title} className="w-[90%] rounded-[5px] mx-auto" />
 
                   <div className="pt-5 w-[90%] mx-auto">
                     <h3 className="heading-3 line-clamp-1 mb-2">{anime.title}</h3>
@@ -36,7 +36,7 @@ export default function OngoingAnime({ animes }: { animes: TOngoingAnimes[] }) {
           ))}
         </ul>
       )}
-      <Pagination />
+      <Pagination totalPage={6} currentPage={currentPage} setSearchParams={setSearchParams} maxVisiblePages={4} />
     </>
   );
 }

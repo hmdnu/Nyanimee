@@ -1,10 +1,11 @@
-import { Link, useSearchParams } from "@remix-run/react";
+import { Link, useLocation, useSearchParams } from "@remix-run/react";
 import { TBaseAnime } from "~/types";
 import { Env } from "~/utils/env";
 import Pagination from "./Pagination";
 
-export default function OngoingAnime({ animes }: { animes: TBaseAnime[] }) {
+export default function Cards({ animes, totalPage }: { animes: TBaseAnime[]; totalPage: number }) {
   const [searchParams, setSearchParams] = useSearchParams({ page: String(1) });
+  const location = useLocation();
 
   const currentPage = Number(searchParams.get("page"));
 
@@ -26,8 +27,8 @@ export default function OngoingAnime({ animes }: { animes: TBaseAnime[] }) {
                   <div className="pt-5 w-[90%] mx-auto">
                     <h3 className="heading-3 line-clamp-1 mb-2">{anime.title}</h3>
                     <div className="flex justify-between">
-                      <h4 className="heading-4">{anime.episode}</h4>
-                      <h4 className="heading-4">{anime.day}</h4>
+                      <h4 className="heading-4">{anime.episode || anime.status || anime.totalEpisode}</h4>
+                      <h4 className="heading-4">{anime.day || anime.score}</h4>
                     </div>
                   </div>
                 </div>
@@ -36,7 +37,10 @@ export default function OngoingAnime({ animes }: { animes: TBaseAnime[] }) {
           ))}
         </ul>
       )}
-      <Pagination totalPage={6} currentPage={currentPage} setSearchParams={setSearchParams} maxVisiblePages={4} />
+
+      {location.pathname === "/search" ? null : (
+        <Pagination totalPage={totalPage} currentPage={currentPage} setSearchParams={setSearchParams} maxVisiblePages={4} />
+      )}
     </>
   );
 }

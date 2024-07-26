@@ -2,8 +2,7 @@ import { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Await, defer, json, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
 import { searchAnime } from "~/api";
-import { CardSkeleton } from "~/components";
-import SearchedAnime from "~/components/SearchedAnime";
+import { Cards, CardSkeleton } from "~/components";
 
 export const meta: MetaFunction<typeof loader> = ({ location }) => {
   const query = location.search.split("=")[1].replace("+", " ");
@@ -31,7 +30,7 @@ export default function SearchAnimePage() {
     <div className="base">
       <h2 className="heading-2 mb-[40px]">Result for {query}</h2>
       <Suspense fallback={<CardSkeleton />}>
-        <Await resolve={animes}>{(animes) => <SearchedAnime animes={animes} />}</Await>
+        <Await resolve={animes}>{(animes) => <Cards animes={animes} totalPage={0} />}</Await>
       </Suspense>
     </div>
   );

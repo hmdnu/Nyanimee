@@ -8,8 +8,8 @@ export const Navlinks = [
     url: "/anime-lists",
   },
   {
-    name: "release schedule",
-    url: "/release-schedule",
+    name: "completed anime",
+    url: "/completed-anime",
   },
 ];
 

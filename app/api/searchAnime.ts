@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import { TSearchAnime } from "~/types";
+import { TBaseAnime } from "~/types";
 import { Env } from "~/utils/env";
 
 export async function searchAnime(animeTitle: string | undefined) {
@@ -12,7 +12,7 @@ export async function searchAnime(animeTitle: string | undefined) {
 
   const animeCards = $(".chivsrc li");
 
-  const animes: TSearchAnime[] = [];
+  const animes: TBaseAnime[] = [];
 
   animeCards.each((_, e) => {
     const title = $(e).find("h2 a").text();

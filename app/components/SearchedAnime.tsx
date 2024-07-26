@@ -1,8 +1,8 @@
 import { Link } from "@remix-run/react";
-import { TSearchAnime } from "~/types";
+import { TBaseAnime } from "~/types";
 import { Env } from "~/utils/env";
 
-export default function SearchedAnime({ animes }: { animes: TSearchAnime[] }) {
+export default function SearchedAnime({ animes }: { animes: TBaseAnime[] }) {
   return (
     <>
       {animes.length < 1 ? (
@@ -16,11 +16,7 @@ export default function SearchedAnime({ animes }: { animes: TSearchAnime[] }) {
             >
               <Link to={anime.href.replace(Env.baseUrl, "")}>
                 <div>
-                  <img
-                    src={anime.coverImg}
-                    alt={anime.title}
-                    className="max-sm:w-[50%] w-[90%] rounded-[5px] mx-auto"
-                  />
+                  <img src={anime.coverImg} alt={anime.title} className="max-sm:w-[50%] w-[90%] rounded-[5px] mx-auto" />
 
                   <div className="pt-5 w-[90%] mx-auto">
                     <h3 className="heading-3 line-clamp-1 mb-2">{anime.title}</h3>

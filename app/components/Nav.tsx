@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Navlinks } from "~/constant";
 
 export default function Nav() {
-  const [navBlur, setNavBlur] = useState("bg-[rgba(51,52,78,0.5)] backdrop-blur-none");
+  const [navBlur, setNavBlur] = useState("bg-[rgba(51,52,78)] backdrop-blur-none");
   const [showNavMobile, setShowNavMobile] = useState(false);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function Nav() {
         setNavBlur("bg-[rgba(40,44,58,0.5)] backdrop-blur-lg");
         return;
       }
-      setNavBlur("bg-[rgba(51,52,78,0.5)] backdrop-blur-none");
+      setNavBlur("bg-[rgba(51,52,78)] backdrop-blur-none");
     });
   }, []);
 

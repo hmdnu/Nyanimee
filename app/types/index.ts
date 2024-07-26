@@ -1,9 +1,12 @@
-export type TOngoingAnimes = {
+export type TBaseAnime = {
   title: string;
-  episode: string;
   coverImg: string;
   href: string;
-  day: string;
+  episode?: string;
+  day?: string;
+  totalEpisode?: string;
+  score?: string;
+  status?: string;
 };
 
 export type TDetailAnime = {
@@ -48,13 +51,6 @@ export type TDownloadUrl = {
 
 export type TDownloadProvider = {
   provider: string;
-  href: string;
-};
-
-export type TSearchAnime = {
-  title: string;
-  status: string;
-  coverImg: string;
   href: string;
 };
 

@@ -2,7 +2,7 @@ import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { getOngoingAnime } from "~/api/ongoingAnime";
 import { useLoaderData, Await, defer, json } from "@remix-run/react";
 import { Suspense } from "react";
-import { CardSkeleton, OngoingAnime } from "~/components/index";
+import { Cards, CardSkeleton } from "~/components/index";
 
 export const meta: MetaFunction = () => {
   return [{ title: "OtakuDl" }, { name: "description", content: "Welcome to Remix!" }];
@@ -34,7 +34,7 @@ export default function Index() {
       <main className="base">
         <h1 className="heading-1 mb-[40px]">Ongoing anime</h1>
         <Suspense fallback={<CardSkeleton />}>
-          <Await resolve={ongoingAnime}>{(animes) => <OngoingAnime animes={animes} />}</Await>
+          <Await resolve={ongoingAnime}>{(animes) => <Cards animes={animes} totalPage={6} />}</Await>
         </Suspense>
       </main>
     </>

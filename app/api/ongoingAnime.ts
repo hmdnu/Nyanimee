@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio";
 import { Env } from "~/utils/env";
 import axios from "axios";
-import { TOngoingAnimes } from "~/types";
+import { TBaseAnime } from "~/types";
 
 const HTMLTags = {
   ongoingAnime: ".venutama .rseries .rapi",
@@ -16,7 +16,7 @@ const HTMLTags = {
 function extractAnimes(anime: string) {
   const $ = cheerio.load(anime);
 
-  const onGoingAnimes: TOngoingAnimes[] = [];
+  const onGoingAnimes: TBaseAnime[] = [];
 
   $(HTMLTags.ongoingAnime).each((i, e) => {
     $(e)

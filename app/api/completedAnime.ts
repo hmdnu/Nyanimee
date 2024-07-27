@@ -10,8 +10,6 @@ async function extractAnime(animes: string) {
 
   const lastPagination = $(".pagenavix .next.page-numbers").prev().text();
 
-  console.log(lastPagination);
-
   $(".detpost").each((i, e) => {
     const title = $(e).find(".jdlflm").text();
     const href = $(e).find("a").attr("href") || "";

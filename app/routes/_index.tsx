@@ -11,7 +11,7 @@ export const meta: MetaFunction = () => {
 export async function loader({ request }: LoaderFunctionArgs) {
   const pageQuery = new URL(request.url).searchParams.get("page");
 
-  const ongoingAnime = getOngoingAnime(pageQuery || "1");
+  const ongoingAnime = await getOngoingAnime(pageQuery || "1");
 
   if (!ongoingAnime) throw json("Internal server error", { status: 500 });
 

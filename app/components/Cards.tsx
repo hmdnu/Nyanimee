@@ -12,7 +12,7 @@ export default function Cards({ animes, totalPage }: { animes: TBaseAnime[]; tot
   return (
     <>
       {animes.length < 1 ? (
-        <>No result found</>
+        <h1 className="heading-1">No result found</h1>
       ) : (
         <ul className="grid grid-cols-5 max-sm:grid-cols-1 max-xl:grid-cols-3 place-items-center gap-5">
           {animes.map((anime) => (

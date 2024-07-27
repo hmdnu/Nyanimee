@@ -23,6 +23,7 @@ export default function CompletedAnimePage() {
 
   return (
     <div className="base">
+      <h1 className="heading-1 mb-[40px]">Completed Anime</h1>
       <Suspense fallback={<CardSkeleton />}>
         <Await resolve={completeAnime}>{(anime) => <Cards animes={anime.completedAnimes} totalPage={Number(anime.lastPagination)} />}</Await>
       </Suspense>

@@ -9,7 +9,7 @@ export default function AnimeLists({ animes }: { animes: TAnimeLists[] }) {
         <div key={anime.alphabet}>
           <h1 className="heading-1 my-[20px] border-b-[1px] border-white pb-2">{anime.alphabet}</h1>
 
-          <ul className="grid grid-cols-2 gap-x-5">
+          <ul className="grid md:grid-cols-2 grid-cols-1 gap-x-5">
             {anime.animes.map((anime) => (
               <li key={anime.title} className="paragraph hover:underline mb-1">
                 <Link to={anime.href.replace(Env.baseUrl, "")}>

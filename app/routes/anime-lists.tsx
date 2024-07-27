@@ -9,7 +9,7 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader() {
-  const animeLists = getAnimeLists();
+  const animeLists = await getAnimeLists();
 
   return defer(
     { animeLists },

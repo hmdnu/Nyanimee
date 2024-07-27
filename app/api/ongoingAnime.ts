@@ -3,30 +3,20 @@ import { Env } from "~/utils/env";
 import axios from "axios";
 import { TBaseAnime } from "~/types";
 
-const HTMLTags = {
-  ongoingAnime: ".venutama .rseries .rapi",
-  card: ".detpost",
-  title: ".thumb .thumbz h2",
-  coverImg: ".thumb .thumbz img",
-  href: ".thumb a",
-  episode: ".epz",
-  day: ".epztipe",
-};
-
 function extractAnimes(anime: string) {
   const $ = cheerio.load(anime);
 
   const onGoingAnimes: TBaseAnime[] = [];
 
-  $(HTMLTags.ongoingAnime).each((i, e) => {
+  $(".rapi").each((i, e) => {
     $(e)
-      .find(HTMLTags.card)
+      .find(".detpost")
       .each((i, e) => {
-        const title = $(e).find(HTMLTags.title).text().trimStart();
-        const coverImg = $(e).find(HTMLTags.coverImg).attr("src") || "";
-        const href = $(e).find(HTMLTags.href).attr("href") || "";
-        const episode = $(e).find(HTMLTags.episode).text().trimStart();
-        const day = $(e).find(HTMLTags.day).text();
+        const title = $(e).find(".thumbz h2").text().trimStart();
+        const coverImg = $(e).find(".thumbz img").attr("src") || "";
+        const href = $(e).find(".thumb a").attr("href") || "";
+        const episode = $(e).find(".epz").text().trimStart();
+        const day = $(e).find(".epztipe").text();
 
         onGoingAnimes.push({ title, coverImg, day, episode, href });
       });

@@ -12,10 +12,10 @@ export default function DetailAnime({ anime }: { anime: TDetailAnime }) {
       <h1 className="heading-1 mb-[40px]">{anime.title}</h1>
 
       {/* cover img and infos */}
-      <div className="flex gap-[45px] bg-secondary rounded-[10px] p-10">
+      <div className="flex md:flex-row flex-col sm:items-start items-center gap-[45px] bg-secondary rounded-[10px] p-10">
         <img src={anime.coverImg} alt={anime.title} className="rounded-[10px] w-[300px]" />
 
-        <ul className="text-[22px] font-semibold">
+        <ul className="heading-2">
           {AnimeInfos.map((info, i) => (
             <li key={info.text}>
               {info.text} : {anime[keys[i] as never]}
@@ -32,7 +32,7 @@ export default function DetailAnime({ anime }: { anime: TDetailAnime }) {
           {anime.episodes?.map((anime) => (
             <li key={anime.episode} className="heading-3">
               <Link to={`/download${anime.href.replace(Env.baseUrl, "")}`} state={{ title: anime.href }}>
-                <div className="bg-primary hover:bg-primary-hover rounded-[10px] px-[20px] py-[16px] flex justify-between items-center transition-all">
+                <div className="bg-primary hover:bg-primary-hover rounded-[10px] px-[20px] py-[16px] flex md:flex-row flex-col justify-between sm:items-center sm:gap-0 gap-5 items-start transition-all">
                   <h3>{anime.episode}</h3>
                   <h3>{anime.date.replaceAll(",", " ")}</h3>
                 </div>

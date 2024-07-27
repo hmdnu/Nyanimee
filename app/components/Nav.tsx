@@ -55,8 +55,9 @@ export default function Nav() {
               <input
                 type="search"
                 name="title"
+                required
                 placeholder="find anime..."
-                className="heading-4 bg-tertiary rounded-[20px] px-4 py-2 max-sm:w-[100px] border-[#4697E2] border-[3px] max-sm:focus:w-[150px] transition-all"
+                className="paragraph bg-tertiary rounded-[20px] sm:px-4 sm:py-2 px-[14px] py-[8px] max-sm:w-[100px] border-[#4697E2] border-[3px] max-sm:focus:w-[150px] transition-all"
               />
             </Form>
 
@@ -69,7 +70,7 @@ export default function Nav() {
 
       {showNavMobile && (
         <div id="mobile-nav" className="h-screen w-[100%] bg-[rgba(0,0,0,0.5)] backdrop-blur-sm fixed z-20">
-          <div className="bg-tertiary p-5 absolute right-5 top-24 roudned-[20px]">
+          <div className="bg-tertiary p-5 absolute right-5 top-24 rounded-[10px]">
             {Navlinks.map((link) => (
               <Link
                 key={link.name}

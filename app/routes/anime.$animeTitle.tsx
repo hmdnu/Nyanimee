@@ -1,22 +1,35 @@
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { useLoaderData, json, Await, defer } from "@remix-run/react";
+import { useLoaderData, Await, defer } from "@remix-run/react";
 import { Suspense } from "react";
-import { getDetailAnime } from "~/api";
-import { DetailAnime } from "~/components";
+import { DetailAnime, Response } from "~/services";
+import { DetailAnime as DetailAnimeComp, AsyncError } from "~/components";
 import { TDetailAnime } from "~/types";
+import { Exception } from "~/utils/exception";
+
+type TTitle = {
+  detailAnime: {
+    data: {
+      title: string;
+    };
+  };
+};
 
 export const meta: MetaFunction = ({ data }) => {
-  return [{ title: (data as { detailAnime: TDetailAnime }).detailAnime.title }];
+  return [{ title: (data as TTitle).detailAnime.data.title || "" }];
 };
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const animeTitle = params.animeTitle;
 
-  if (!animeTitle) throw json("Anime Title Not Found", { status: 404 });
+  if (!animeTitle) throw new Response(404, "Query not found");
 
-  const detailAnime = await getDetailAnime(animeTitle);
+  const detailAnime = await new DetailAnime().get(animeTitle).catch((error) => {
+    console.log(error);
 
-  if (!detailAnime) throw json("Internal server error", { status: 500 });
+    if (error instanceof Exception) {
+      throw new Response(error.status, error.statusText);
+    }
+  });
 
   return defer(
     { detailAnime },
@@ -35,7 +48,9 @@ export default function DetailAnimePage() {
     <div className="base">
       {
         <Suspense fallback={<div>Loading bro</div>}>
-          <Await resolve={detailAnime}>{(detail) => <DetailAnime anime={detail} />}</Await>
+          <Await resolve={detailAnime} errorElement={<AsyncError />}>
+            {(detail) => <DetailAnimeComp anime={detail.data as TDetailAnime} />}
+          </Await>
         </Suspense>
       }
     </div>

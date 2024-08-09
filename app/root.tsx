@@ -1,6 +1,7 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteError } from "@remix-run/react";
 import "./tailwind.css";
-import { Nav, ErrorPage } from "./components/index";
+import { Nav, ErrorComponent } from "./components/index";
+import { Exception } from "./utils/exception";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -25,11 +26,11 @@ export function ErrorBoundary() {
   const error = useRouteError();
 
   if (isRouteErrorResponse(error)) {
-    return <ErrorPage status={error.status} statusText={error.statusText} />;
-  } else if (error instanceof Error) {
-    return <ErrorPage statusText={error.message} />;
+    return <ErrorComponent status={error.status} statusText={error.statusText} />;
+  } else if (error instanceof Exception) {
+    return <ErrorComponent status={Number(error.status)} statusText={error.message} />;
   } else {
-    return <ErrorPage statusText={"Internal server error"} status={500} />;
+    return <ErrorComponent status={500} statusText={"Internal server error"} />;
   }
 }
 

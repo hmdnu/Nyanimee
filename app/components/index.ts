@@ -5,6 +5,7 @@ import CardSkeleton from "./skeletons/CardSkeleton";
 import AnimeLists from "./AnimeLists";
 import ListsSkeleton from "./skeletons/ListsSkeleton";
 import Cards from "./Cards";
-import ErrorPage from "./Error";
+import AsyncError from "./AsyncError";
+import ErrorComponent from "./ErrorComponent";
 
-export { Nav, DetailAnime, Pagination, CardSkeleton, AnimeLists, ListsSkeleton, Cards, ErrorPage };
+export { Nav, DetailAnime, Pagination, CardSkeleton, AnimeLists, ListsSkeleton, Cards, AsyncError, ErrorComponent };

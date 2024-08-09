@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { Await, json, MetaFunction, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
-import { getAnimeDownloadUrl } from "~/api/downloadAnime";
+import { getAnimeDownloadUrl } from "~/services/downloadAnime";
 import DownloadAnime from "~/components/DownloadAnime";
 import { TDownloadAnimeUrl } from "~/types";
 

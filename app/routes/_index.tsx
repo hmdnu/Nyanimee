@@ -1,23 +1,30 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { getOngoingAnime } from "~/api/ongoingAnime";
-import { useLoaderData, Await, defer, json } from "@remix-run/react";
+import { OngoingAnime } from "~/services/ongoingAnime";
+import { useLoaderData, Await, defer } from "@remix-run/react";
 import { Suspense } from "react";
-import { Cards, CardSkeleton } from "~/components/index";
+import { Cards, CardSkeleton, AsyncError } from "~/components/index";
+import { Exception, Response } from "~/utils";
+import { TBaseAnime } from "~/types";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "OtakuDl" }, { name: "description", content: "Welcome to Remix!" }];
+  return [{ title: "nyanime" }, { name: "nyanime", content: "anime downlad subtitle indo" }];
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const pageQuery = new URL(request.url).searchParams.get("page");
 
-  const ongoingAnime = await getOngoingAnime(pageQuery || "1");
+  const ongoingAnime = new OngoingAnime().get(pageQuery || "1").catch((error) => {
+    if (error instanceof Exception) {
+      throw new Response(error.status, error.message);
+    }
+  });
 
-  if (!ongoingAnime) throw json("Internal server error", { status: 500 });
+  if (!ongoingAnime) {
+    throw new Exception("internal server error");
+  }
 
   return defer(
     { ongoingAnime },
-
     {
       headers: {
         "Cache-Control": "max-age=" + 60 * 60,
@@ -30,13 +37,13 @@ export default function Index() {
   const { ongoingAnime } = useLoaderData<typeof loader>();
 
   return (
-    <>
-      <main className="base">
-        <h1 className="heading-1 mb-[40px]">Ongoing anime</h1>
-        <Suspense fallback={<CardSkeleton />}>
-          <Await resolve={ongoingAnime}>{(animes) => <Cards animes={animes} totalPage={6} />}</Await>
-        </Suspense>
-      </main>
-    </>
+    <div className="base">
+      <h1 className="heading-1">Ongoing anime</h1>
+      <Suspense fallback={<CardSkeleton />}>
+        <Await resolve={ongoingAnime} errorElement={<AsyncError />}>
+          {(animes) => <Cards animes={animes.data as TBaseAnime[]} totalPage={6} />}
+        </Await>
+      </Suspense>
+    </div>
   );
 }

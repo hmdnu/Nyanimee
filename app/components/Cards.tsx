@@ -20,7 +20,7 @@ export default function Cards({ animes, totalPage }: { animes: TBaseAnime[]; tot
               key={anime.title}
               className="bg-secondary-hover hover:bg-secondary transition-all rounded-[5px] max-sm:w-[80%] w-full h-full flex flex-col justify-center px-2 py-5"
             >
-              <Link to={anime.href.replace(Env.baseUrl, "")} prefetch="intent" rel="prefetch">
+              <Link to={anime.href.replace(Env.baseUrl, "")}>
                 <div>
                   <img src={anime.coverImg} alt={anime.title} className="w-[90%] rounded-[5px] mx-auto" />
 

@@ -1,15 +1,16 @@
 import { MetaFunction } from "@remix-run/node";
 import { Await, defer, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
-import { getAnimeLists } from "~/services/animeLists";
+import { AnimeList } from "~/services/animeLists";
 import { AnimeLists, AsyncError, ListsSkeleton } from "~/components";
+import { TAnimeLists } from "~/types";
 
 export const meta: MetaFunction = () => {
   return [{ title: "List Anime" }];
 };
 
 export async function loader() {
-  const animeLists = getAnimeLists();
+  const animeLists = new AnimeList().get();
 
   return defer(
     { animeLists },
@@ -28,7 +29,7 @@ export default function AnimeListsPage() {
     <div className="base">
       <Suspense fallback={<ListsSkeleton />}>
         <Await resolve={animeLists} errorElement={<AsyncError />}>
-          {(animes) => <AnimeLists animes={animes} />}
+          {(animes) => <AnimeLists animes={animes.data as TAnimeLists[]} />}
         </Await>
       </Suspense>
     </div>

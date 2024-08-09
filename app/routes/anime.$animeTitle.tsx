@@ -24,8 +24,6 @@ export async function loader({ params }: LoaderFunctionArgs) {
   if (!animeTitle) throw new Response(404, "Query not found");
 
   const detailAnime = await new DetailAnime().get(animeTitle).catch((error) => {
-    console.log(error);
-
     if (error instanceof Exception) {
       throw new Response(error.status, error.statusText);
     }

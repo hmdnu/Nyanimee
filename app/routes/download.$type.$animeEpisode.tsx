@@ -1,8 +1,8 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { Await, json, MetaFunction, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
-import { getAnimeDownloadUrl } from "~/services/downloadAnime";
-import DownloadAnime from "~/components/DownloadAnime";
+import { DownloadAnime as DownloadAnimeComp } from "~/components/index";
+import { DownloadAnime } from "~/services/index";
 import { TDownloadAnimeUrl } from "~/types";
 
 type TLoader = {
@@ -20,7 +20,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   if (!animeEpisode || !type) throw json("Anime episode not found", { status: 404 });
 
-  const downloadUrl = await getAnimeDownloadUrl(animeEpisode, type);
+  const downloadUrl = new DownloadAnime().get(animeEpisode, type);
 
   return json(
     { downloadUrl },
@@ -38,7 +38,7 @@ export default function AnimeDownloadPage() {
   return (
     <div className="base">
       <Suspense fallback={<div>loading...</div>}>
-        <Await resolve={animes.downloadUrl}>{(anime) => <DownloadAnime anime={anime} />}</Await>
+        <Await resolve={animes.downloadUrl}>{(anime) => <DownloadAnimeComp anime={anime} />}</Await>
       </Suspense>
     </div>
   );

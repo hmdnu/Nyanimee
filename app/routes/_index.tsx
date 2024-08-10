@@ -1,30 +1,33 @@
-import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import type { MetaFunction } from "@remix-run/node";
 import { OngoingAnime } from "~/services/ongoingAnime";
-import { useLoaderData, Await, defer } from "@remix-run/react";
+import { useLoaderData, Await, defer, Link } from "@remix-run/react";
 import { Suspense } from "react";
-import { Cards, CardSkeleton, AsyncError } from "~/components/index";
+import { CardSkeleton, AsyncError, Carousel } from "~/components/index";
 import { Exception, Response } from "~/utils";
 import { TBaseAnime } from "~/types";
+import Card from "~/components/Card";
+import { CompletedAnime } from "~/services";
+import { TCompletedAnime } from "~/services/completedAnime";
 
 export const meta: MetaFunction = () => {
   return [{ title: "nyanime" }, { name: "nyanime", content: "anime downlad subtitle indo" }];
 };
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const pageQuery = new URL(request.url).searchParams.get("page");
-
-  const ongoingAnime = new OngoingAnime().get(pageQuery || "1").catch((error) => {
+export async function loader() {
+  const ongoingAnime = new OngoingAnime().get(String(1)).catch((error) => {
     if (error instanceof Exception) {
       throw new Response(error.status, error.message);
     }
   });
 
-  if (!ongoingAnime) {
-    throw new Exception("internal server error");
-  }
+  const completedAnime = new CompletedAnime().get(String(1)).catch((error) => {
+    if (error instanceof Exception) {
+      throw new Response(error.status, error.message);
+    }
+  });
 
   return defer(
-    { ongoingAnime },
+    { ongoingAnime, completedAnime },
     {
       headers: {
         "Cache-Control": "max-age=" + 60 * 60,
@@ -34,16 +37,65 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function Index() {
-  const { ongoingAnime } = useLoaderData<typeof loader>();
+  const { ongoingAnime, completedAnime } = useLoaderData<typeof loader>();
 
   return (
     <div className="base">
-      <h1 className="heading-1">Ongoing anime</h1>
-      <Suspense fallback={<CardSkeleton />}>
-        <Await resolve={ongoingAnime} errorElement={<AsyncError />}>
-          {(animes) => <Cards animes={animes.data as TBaseAnime[]} totalPage={6} />}
-        </Await>
-      </Suspense>
+      <section className="mb-[40px]">
+        <h1 className="heading-1 mb-[20px]">Ongoing anime</h1>
+        <Suspense fallback={<CardSkeleton totalCards={5} />}>
+          <Await resolve={ongoingAnime} errorElement={<AsyncError />}>
+            {(animes) => (
+              <Carousel>
+                {(animes.data as TBaseAnime[]).map((anime) => (
+                  <Card
+                    key={anime.title}
+                    title={anime.title}
+                    coverImg={anime.coverImg}
+                    href={anime.href}
+                    day={anime.day}
+                    episode={anime.episode}
+                    score={anime.score}
+                    status={anime.status}
+                    totalEpisode={anime.totalEpisode}
+                  />
+                ))}
+              </Carousel>
+            )}
+          </Await>
+          <Link to={"/ongoing"} className="flex w-full justify-center">
+            <span className="px-4 py-2 heading-3 bg-blue-600 hover:bg-blue-700 rounded-[10px] transition">See more</span>
+          </Link>
+        </Suspense>
+      </section>
+
+      <section>
+        <h1 className="heading-1 mb-[20px]">Completed anime</h1>
+        <Suspense fallback={<CardSkeleton totalCards={5} />}>
+          <Await resolve={completedAnime} errorElement={<AsyncError />}>
+            {(animes) => (
+              <Carousel>
+                {(animes.data as TCompletedAnime).completedAnimes.map((anime) => (
+                  <Card
+                    key={anime.title}
+                    title={anime.title}
+                    coverImg={anime.coverImg}
+                    href={anime.href}
+                    day={anime.day}
+                    episode={anime.episode}
+                    score={anime.score}
+                    status={anime.status}
+                    totalEpisode={anime.totalEpisode}
+                  />
+                ))}
+              </Carousel>
+            )}
+          </Await>
+          <Link to={"/completed"} className="flex w-full justify-center mt-3">
+            <span className="px-4 py-2 heading-3 bg-blue-600 hover:bg-blue-700 rounded-[10px] transition">See more</span>
+          </Link>
+        </Suspense>
+      </section>
     </div>
   );
 }

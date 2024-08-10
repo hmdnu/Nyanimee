@@ -6,12 +6,11 @@ import { fetch, Response } from "~/utils";
 
 export class DownloadAnime extends AnimeStructure<TDownloadAnimeUrl> {
   protected extractHTML(html: string, type: string): TDownloadAnimeUrl {
-    const downloadUrl: TDownloadAnimeUrl = { title: "", streamUrl: "", downloadUrl: [] };
+    const downloadUrl: TDownloadAnimeUrl = { title: "", downloadUrl: [] };
 
     const $ = cheerio.load(html);
 
     const title = $(`${type === "episode" ? ".download" : ".batchlink"} h4`).text();
-    const streamUrl = $("iframe").attr("src") || "";
 
     // get anime download infos
     $(`${type === "episode" ? ".download" : ".batchlink"} ul li`).each((_, e) => {
@@ -33,12 +32,11 @@ export class DownloadAnime extends AnimeStructure<TDownloadAnimeUrl> {
 
     // populate title & stream url
     downloadUrl.title = title;
-    downloadUrl.streamUrl = streamUrl;
 
     return downloadUrl;
   }
 
-  async get(type: string, animeEpisode: string): Promise<Response> {
+  async get(animeEpisode: string, type: string): Promise<Response> {
     const page = await fetch(`${Env.baseUrl}/${type}/${animeEpisode}`);
 
     const anime = this.extractHTML(String(page?.data), type);

@@ -1,7 +1,7 @@
-export default function CardSkeleton() {
+export default function CardSkeleton({ totalCards }: { totalCards: number }) {
   return (
     <ul className="grid grid-cols-5 max-sm:grid-cols-1 max-xl:grid-cols-3 place-items-center gap-5">
-      {[...Array(10)].map((_, i) => (
+      {[...Array(totalCards)].map((_, i) => (
         <li
           key={i}
           className="bg-secondary-hover hover:bg-secondary transition-all rounded-[5px] w-full h-full flex flex-col justify-center px-2 py-5"

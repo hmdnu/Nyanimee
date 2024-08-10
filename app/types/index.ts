@@ -39,7 +39,6 @@ export type TError = {
 
 export type TDownloadAnimeUrl = {
   title: string;
-  streamUrl: string;
   downloadUrl: TDownloadUrl[];
 };
 

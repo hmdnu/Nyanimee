@@ -4,13 +4,18 @@ import { Suspense } from "react";
 import { AnimeList } from "~/services/animeLists";
 import { AnimeLists, AsyncError, ListsSkeleton } from "~/components";
 import { TAnimeLists } from "~/types";
+import { Exception, Response } from "~/utils";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "List Anime" }];
+  return [{ title: "List" }];
 };
 
 export async function loader() {
-  const animeLists = new AnimeList().get();
+  const animeLists = new AnimeList().get().catch((error) => {
+    if (error instanceof Exception) {
+      throw new Response(error.status, error.message);
+    }
+  });
 
   return defer(
     { animeLists },

@@ -6,16 +6,8 @@ import { DetailAnime as DetailAnimeComp, AsyncError } from "~/components";
 import { TDetailAnime } from "~/types";
 import { Exception } from "~/utils/exception";
 
-type TTitle = {
-  detailAnime: {
-    data: {
-      title: string;
-    };
-  };
-};
-
-export const meta: MetaFunction = ({ data }) => {
-  return [{ title: (data as TTitle).detailAnime.data.title || "" }];
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.title }];
 };
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -23,14 +15,16 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   if (!animeTitle) throw new Response(404, "Query not found");
 
-  const detailAnime = await new DetailAnime().get(animeTitle).catch((error) => {
+  const detailAnime = new DetailAnime().get(animeTitle).catch((error) => {
     if (error instanceof Exception) {
       throw new Response(error.status, error.statusText);
     }
   });
 
+  const title = (await new DetailAnime().get(animeTitle)).data as TDetailAnime;
+
   return defer(
-    { detailAnime },
+    { detailAnime, title: title.title },
     {
       headers: {
         "Cache-Control": "max-age=" + 60 * 60,

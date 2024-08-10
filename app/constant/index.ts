@@ -4,12 +4,16 @@ export const Navlinks = [
     url: "/",
   },
   {
-    name: "anime lists",
-    url: "/anime-lists",
+    name: "lists",
+    url: "/lists",
   },
   {
-    name: "completed anime",
-    url: "/completed-anime",
+    name: "genre",
+    url: "/genre",
+  },
+  {
+    name: "schedule",
+    url: "/schedule",
   },
 ];
 

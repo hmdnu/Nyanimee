@@ -55,3 +55,7 @@ body {
     @apply font-medium sm:text-[16px] text-[14px];
   }
 }
+
+.slick-slide {
+  @apply p-2;
+}

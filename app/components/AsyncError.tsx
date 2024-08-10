@@ -7,11 +7,21 @@ export default function AsyncError() {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <h1 className="heading-1">Something went wrong! {error.message}</h1>
+      <h1 className="heading-1">something went wrong!</h1>
+      <h2 className="heading-2">{error.message || "looks like there's an error"}</h2>
 
-      <button className="bg-blue-500 px-2 py-1 heading-4" onClick={() => navigate("/")}>
-        Go Back
-      </button>
+      <div className="flex gap-5 mt-5">
+        <button className="bg-blue-500 hover:bg-blue-700 transition-all px-4 py-2 heading-4 rounded-[10px]" onClick={() => navigate("/")}>
+          Go Back
+        </button>
+
+        <button
+          className="bg-green-500 hover:bg-green-700 transition-all px-4 py-2 heading-4 rounded-[10px]"
+          onClick={() => navigate(".", { replace: true })}
+        >
+          Refresh
+        </button>
+      </div>
     </div>
   );
 }

@@ -1,9 +1,10 @@
 import { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
-import { Await, defer, json, useLoaderData } from "@remix-run/react";
+import { Await, defer, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
-import { SearchAnime } from "~/services";
+import { Response, SearchAnime } from "~/services";
 import { Cards, CardSkeleton } from "~/components";
 import { TBaseAnime } from "~/types";
+import { Exception } from "~/utils";
 
 export const meta: MetaFunction<typeof loader> = ({ location }) => {
   const query = location.search.split("=")[1].replace("+", " ");
@@ -15,13 +16,22 @@ export async function loader({ request }: ActionFunctionArgs) {
   const url = new URL(request.url);
   const animeTitle = url.searchParams.get("title") || "";
 
-  if (!animeTitle) throw json("Anime title not found", { status: 404 });
+  if (!animeTitle) throw new Response(404, "Missing query");
 
-  const animes = new SearchAnime().get(animeTitle);
+  const animes = new SearchAnime().get(animeTitle).catch((error) => {
+    if (error instanceof Exception) {
+      throw new Response(error.status, error.message);
+    }
+  });
 
-  if (!animes) throw json("Internal server erorr", { status: 500 });
-
-  return defer({ animes, query: animeTitle });
+  return defer(
+    { animes, query: animeTitle },
+    {
+      headers: {
+        "Cache-Control": "max-age=" + 60 * 60,
+      },
+    }
+  );
 }
 
 export default function SearchAnimePage() {
@@ -30,7 +40,7 @@ export default function SearchAnimePage() {
   return (
     <div className="base">
       <h2 className="heading-2 mb-[40px]">Result for {query}</h2>
-      <Suspense fallback={<CardSkeleton />}>
+      <Suspense fallback={<CardSkeleton totalCards={5} />}>
         <Await resolve={animes}>{(anime) => <Cards animes={anime.data as TBaseAnime[]} totalPage={0} />}</Await>
       </Suspense>
     </div>

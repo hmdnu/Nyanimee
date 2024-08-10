@@ -8,9 +8,19 @@ export default function ErrorComponent({ status, statusText }: { status: number;
       <h1 className="heading-1">{status}</h1>
       <h2 className="heading-2">{statusText}</h2>
 
-      <button className="bg-blue-500 px-2 py-1 heading-4 rounded-[10px] mt-[20px]" onClick={() => navigate("/")}>
-        Go Back
-      </button>
+      <div className="flex gap-5 mt-5">
+        <button className="bg-blue-500 hover:bg-blue-700 transition-all px-4 py-2 heading-4 rounded-[10px]" onClick={() => navigate("/")}>
+          Go Back
+        </button>
+        {status !== 404 && (
+          <button
+            className="bg-green-500 hover:bg-green-700 transition-all px-4 py-2 heading-4 rounded-[10px]"
+            onClick={() => navigate(".", { replace: true })}
+          >
+            Refresh
+          </button>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,27 +1,66 @@
 import { Link } from "@remix-run/react";
-import { AnimeInfos } from "~/constant";
 import { TDetailAnime } from "~/types";
-import { toCamelCase } from "~/utils/camelCase";
 import { Env } from "~/utils/env";
 
 export default function DetailAnime({ anime }: { anime: TDetailAnime }) {
-  const keys = AnimeInfos.map((anime) => toCamelCase(anime.text));
-
   return (
-    <div>
-      <h1 className="heading-1 mb-[40px]">{anime.title}</h1>
+    <>
+      <div className="flex lg:flex-col flex-row gap-5 justify-between">
+        {/* details */}
+        <section className="bg-secondary p-10 rounded-[20px] h-fit flex gap-10">
+          <img src={anime.coverImg} alt={anime.title} className="w-[500px] h-[450px] rounded-[10px]" />
 
-      {/* cover img and infos */}
-      <div className="flex md:flex-row flex-col sm:items-start items-center gap-[45px] bg-secondary rounded-[10px] p-10">
-        <img src={anime.coverImg} alt={anime.title} className="rounded-[10px] w-[300px]" />
+          <div>
+            <h1 className="heading-1">{anime.title}</h1>
+            <div className="heading-4 flex gap-5 mt-5">
+              <h4>Score {anime.score}</h4>
+              <h4>Studio | {anime.studio}</h4>
+              <h4>Status | {anime.status}</h4>
+              <h4>Type | {anime.type}</h4>
+            </div>
 
-        <ul className="heading-2">
-          {AnimeInfos.map((info, i) => (
-            <li key={info.text}>
-              {info.text} : {anime[keys[i] as never]}
-            </li>
-          ))}
-        </ul>
+            <p className="paragraph mt-5">{anime.synopsis.replace("[Written by MAL Rewrite]", "")}</p>
+
+            <div className="flex gap-2 mt-5">
+              {anime.genres.map((genre, i) => (
+                <div key={i} className="heading-4 bg-tertiary px-3 py-1 rounded-[10px]">
+                  {genre.name}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="flex justify-between gap-5">
+          {/* info */}
+          <div className="bg-secondary py-10 px-8 rounded-[20px] w-full flex flex-col gap-2 h-fit">
+            <span className="flex justify-between">
+              <h3 className="heading-3">Total episodes</h3>
+              <h3 className="heading-3">
+                {anime.totalEpisode} {Number(anime.totalEpisode) < 2 ? "Episode" : "Episodes"}
+              </h3>
+            </span>
+            <span className="flex justify-between">
+              <h3 className="heading-3">Duration</h3>
+              <h3 className="heading-3">{anime.duration}</h3>
+            </span>
+            <span className="flex justify-between">
+              <h3 className="heading-3">Aired</h3>
+              <h3 className="heading-3">{anime.aired}</h3>
+            </span>
+            <span className="flex justify-between">
+              <h3 className="heading-3">Rating</h3>
+              <h3 className="heading-3">{anime.rating}</h3>
+            </span>
+          </div>
+
+          {/* trailer */}
+          <div className="bg-secondary py-10 px-8 rounded-[20px] w-full">
+            <h1 className="heading-1">Trailer</h1>
+
+            <iframe src={anime.trailerUrl} title={anime.title} className="mt-5 w-full h-[400px] rounded-[20px]"></iframe>
+          </div>
+        </section>
       </div>
 
       {/* episodes */}
@@ -41,6 +80,6 @@ export default function DetailAnime({ anime }: { anime: TDetailAnime }) {
           ))}
         </ul>
       </div>
-    </div>
+    </>
   );
 }

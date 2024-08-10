@@ -11,6 +11,8 @@ export async function fetch(url: string): Promise<Response | undefined> {
 
     return new Response(page.status, page.statusText, page.data);
   } catch (error) {
+    console.log(error);
+
     if (error instanceof AxiosError) {
       return new Response(error.status, error.message);
     }

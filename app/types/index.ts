@@ -11,19 +11,19 @@ export type TBaseAnime = {
 
 export type TDetailAnime = {
   title: string;
-  japanese: string;
-  score: string;
-  producer: string;
+  score: number;
   type: string;
   status: string;
-  totalEpisode: string;
+  totalEpisode: number;
   duration: string;
-  releaseDate: string;
+  aired: string;
   studio: string;
-  genres: string;
+  genres: TJikanAnimeGenre[];
+  trailerUrl: string;
+  synopsis: string;
+  rating: string;
   coverImg: string;
-  synopsis?: string;
-  episodes?: TDetailAnimeEpisodes[];
+  episodes: TDetailAnimeEpisodes[];
 };
 
 export type TDetailAnimeEpisodes = {
@@ -61,4 +61,34 @@ export type TAnimeLists = {
 export type TAnime = {
   title: string;
   href: string;
+};
+
+export type TJikanAnime = {
+  title: string;
+  score: number;
+  studios: [
+    {
+      name: string;
+    }
+  ];
+  status: string;
+  type: string;
+  synopsis: string;
+  episodes: number;
+  duration: string;
+  aired: { string: string };
+  rating: string;
+  images: {
+    jpg: {
+      large_image_url: string;
+    };
+  };
+  trailer: {
+    embed_url: string;
+  };
+  genres: TJikanAnimeGenre[];
+};
+
+type TJikanAnimeGenre = {
+  name: string;
 };

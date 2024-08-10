@@ -10,7 +10,7 @@ import { CompletedAnime } from "~/services";
 import { TCompletedAnime } from "~/services/completedAnime";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "nyanime" }, { name: "nyanime", content: "anime downlad subtitle indo" }];
+  return [{ title: "Nyanime" }, { name: "nyanime", content: "anime downlad subtitle indo" }];
 };
 
 export async function loader() {

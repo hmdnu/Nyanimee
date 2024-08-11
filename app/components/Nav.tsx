@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Link, Form } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { Navlinks } from "~/constant";
@@ -19,9 +17,7 @@ export default function Nav() {
   }, []);
 
   useEffect(() => {
-    const body = document.body;
-
-    body.addEventListener("click", (e: MouseEvent) => {
+    document.body.addEventListener("click", (e: MouseEvent) => {
       if (e.target instanceof HTMLElement && e.target.id === "mobile-nav") {
         document.body.classList.remove("overflow-hidden");
 
@@ -40,7 +36,7 @@ export default function Nav() {
       <nav className={`fixed w-full ${navBlur} transition-all z-10`}>
         <div className="w-[90%] mx-auto py-5 flex justify-between items-center">
           <Link to={"/"} className="heading-1">
-            Nyanime
+            Nyanimee
           </Link>
 
           {/* lists desktop */}

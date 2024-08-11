@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { OngoingAnime } from "~/services/ongoingAnime";
+import { OngoingAnime } from "~/services/ongoing";
 import { useLoaderData, Await, defer } from "@remix-run/react";
 import { Suspense } from "react";
 import { Cards, CardSkeleton, AsyncError } from "~/components/index";
@@ -34,7 +34,7 @@ export default function Ongoing() {
 
   return (
     <div className="base">
-      <h1 className="heading-1">Ongoing anime</h1>
+      <h1 className="heading-1 mb-[40px]">Ongoing anime</h1>
       <Suspense fallback={<CardSkeleton totalCards={10} />}>
         <Await resolve={ongoingAnime} errorElement={<AsyncError />}>
           {(animes) => <Cards animes={animes.data as TBaseAnime[]} totalPage={6} />}

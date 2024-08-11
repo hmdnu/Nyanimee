@@ -1,5 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
-import { OngoingAnime } from "~/services/ongoingAnime";
+import { OngoingAnime } from "~/services/ongoing";
 import { useLoaderData, Await, defer, Link } from "@remix-run/react";
 import { Suspense } from "react";
 import { CardSkeleton, AsyncError, Carousel } from "~/components/index";
@@ -7,10 +7,10 @@ import { Exception, Response } from "~/utils";
 import { TBaseAnime } from "~/types";
 import Card from "~/components/Card";
 import { CompletedAnime } from "~/services";
-import { TCompletedAnime } from "~/services/completedAnime";
+import { TCompletedAnime } from "~/services/completed";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Nyanime" }, { name: "nyanime", content: "anime downlad subtitle indo" }];
+  return [{ title: "Nyanimee" }, { name: "nyanime", content: "anime downlad subtitle indo" }];
 };
 
 export async function loader() {

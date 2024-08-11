@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio";
 import { AnimeStructure } from "~/structs/AnimeStruct";
 import { TBaseAnime } from "~/types";
-import { Response, fetch } from "~/utils";
+import { Response, gofetch } from "~/utils";
 import { Env } from "~/utils/env";
 
 export type TCompletedAnime = {
@@ -31,7 +31,7 @@ export class CompletedAnime extends AnimeStructure<TCompletedAnime> {
   }
 
   async get(query: string): Promise<Response> {
-    const page = await fetch(`${Env.baseUrl}/complete-anime/page/${query}`);
+    const page = await gofetch({ baseUrl: Env.baseUrl }, `/complete-anime/page/${query}`);
 
     if (!page || page.status !== 200) {
       throw new Response(page?.status, page?.statusText);

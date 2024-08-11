@@ -3,7 +3,7 @@ import { Await, defer, MetaFunction, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
 import { Cards, CardSkeleton } from "~/components";
 import { CompletedAnime } from "~/services";
-import { TCompletedAnime } from "~/services/completedAnime";
+import { TCompletedAnime } from "~/services/completed";
 import { Exception, Response } from "~/utils";
 
 export const meta: MetaFunction = () => {

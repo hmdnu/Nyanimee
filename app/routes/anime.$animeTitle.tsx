@@ -1,10 +1,10 @@
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { useLoaderData, Await, defer } from "@remix-run/react";
 import { Suspense } from "react";
-import { DetailAnime, Response } from "~/services";
+import { DetailAnime } from "~/services";
 import { DetailAnime as DetailAnimeComp, AsyncError } from "~/components";
 import { TDetailAnime } from "~/types";
-import { Exception } from "~/utils/exception";
+import { Exception, Response } from "~/utils/index";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [{ title: data?.title }];
@@ -19,12 +19,17 @@ export async function loader({ params }: LoaderFunctionArgs) {
     if (error instanceof Exception) {
       throw new Response(error.status, error.statusText);
     }
+
+    return null;
   });
 
-  const title = (await new DetailAnime().get(animeTitle)).data as TDetailAnime;
+  const title = await detailAnime; // Use the resolved `detailAnime` promise directly
+  if (!title) {
+    throw new Response(404, "Anime not found");
+  }
 
   return defer(
-    { detailAnime, title: title.title },
+    { detailAnime, title: title.data as TDetailAnime },
     {
       headers: {
         "Cache-Control": "max-age=" + 60 * 60,
@@ -41,7 +46,7 @@ export default function DetailAnimePage() {
       {
         <Suspense fallback={<div>Loading bro</div>}>
           <Await resolve={detailAnime} errorElement={<AsyncError />}>
-            {(detail) => <DetailAnimeComp anime={detail.data as TDetailAnime} />}
+            {(detail) => <DetailAnimeComp anime={detail?.data as TDetailAnime} />}
           </Await>
         </Suspense>
       }

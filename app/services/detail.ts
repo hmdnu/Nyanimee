@@ -2,7 +2,7 @@ import * as cheerio from "cheerio";
 import { Env } from "~/utils/env";
 import { TDetailAnime, TJikanAnime } from "~/types";
 import { AnimeStructure } from "~/structs/AnimeStruct";
-import { fetch, Response } from "~/utils";
+import { gofetch, Response } from "~/utils";
 
 export class DetailAnime extends AnimeStructure<TDetailAnime> {
   protected async extractHTML(html: string): Promise<TDetailAnime> {
@@ -47,8 +47,10 @@ export class DetailAnime extends AnimeStructure<TDetailAnime> {
     const title = splittedTitle.join(" ");
 
     // get details
-    const res = await fetch(`${Env.jikanUrl}/anime?q=${title}&limit=1`);
+    const res = await gofetch({ baseUrl: Env.jikanUrl }, `/anime?q=${title}&limit=1`);
     const details = (res?.data as { data: TJikanAnime[] }).data[0];
+
+    console.log(res);
 
     // populate instances
     detailAnime.title = title;
@@ -69,13 +71,13 @@ export class DetailAnime extends AnimeStructure<TDetailAnime> {
   }
 
   async get(animeTitle: string): Promise<Response> {
-    const page = await fetch(`${Env.baseUrl}/anime/${animeTitle}`);
+    const page = await gofetch({ baseUrl: Env.baseUrl }, `/anime/${animeTitle}`);
 
     if (!page || page.status !== 200) {
       throw new Response(page?.status, page?.statusText);
     }
 
-    const animes = await this.extractHTML(String(page?.data));
+    const animes = await this.extractHTML(String(page.data));
 
     return new Response(200, "ok", animes);
   }

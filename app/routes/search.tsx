@@ -1,10 +1,10 @@
 import { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Await, defer, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
-import { Response, SearchAnime } from "~/services";
+import { SearchAnime } from "~/services";
 import { Cards, CardSkeleton } from "~/components";
 import { TBaseAnime } from "~/types";
-import { Exception } from "~/utils";
+import { Exception, Response } from "~/utils";
 
 export const meta: MetaFunction<typeof loader> = ({ location }) => {
   const query = location.search.split("=")[1].replace("+", " ");

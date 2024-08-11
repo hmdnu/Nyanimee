@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio";
 import { Env } from "~/utils/env";
 import { TBaseAnime } from "~/types";
-import { fetch } from "~/utils/fetch";
+import { gofetch } from "~/utils/fetch";
 import { Response } from "~/utils/response";
 import { AnimeStructure } from "~/structs/AnimeStruct";
 
@@ -29,7 +29,7 @@ export class OngoingAnime extends AnimeStructure<TBaseAnime[]> {
   }
 
   async get(query: string): Promise<Response> {
-    const page = await fetch(`${Env.baseUrl}/ongoing-anime/page/${query}` || "");
+    const page = await gofetch({ baseUrl: Env.baseUrl }, `/ongoing-anime/page/${query}`);
 
     if (!page || page.status !== 200) {
       throw new Response(Number(page?.status), String(page?.statusText));

@@ -1,9 +1,15 @@
 import axios, { AxiosError } from "axios";
 import { Response } from "./response";
 
-export async function fetch(url: string): Promise<Response | undefined> {
+type BaseUrl = {
+  baseUrl: string;
+};
+
+export async function gofetch(baseUrl: string | BaseUrl, url?: string): Promise<Response | undefined> {
   try {
-    const page = await axios.get(url);
+    const base = (baseUrl as BaseUrl).baseUrl || baseUrl;
+
+    const page = await axios.get(`${base}${url || ""}`);
 
     if (page.status !== 200) {
       throw new Response(page.status, page.statusText);
@@ -11,8 +17,6 @@ export async function fetch(url: string): Promise<Response | undefined> {
 
     return new Response(page.status, page.statusText, page.data);
   } catch (error) {
-    console.log(error);
-
     if (error instanceof AxiosError) {
       return new Response(error.status, error.message);
     }

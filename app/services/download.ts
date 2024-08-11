@@ -2,7 +2,7 @@ import * as cheerio from "cheerio";
 import { TDownloadAnimeUrl, TDownloadProvider } from "~/types";
 import { Env } from "~/utils/env";
 import { AnimeStructure } from "~/structs/AnimeStruct";
-import { fetch, Response } from "~/utils";
+import { gofetch, Response } from "~/utils";
 
 export class DownloadAnime extends AnimeStructure<TDownloadAnimeUrl> {
   protected extractHTML(html: string, type: string): TDownloadAnimeUrl {
@@ -37,7 +37,7 @@ export class DownloadAnime extends AnimeStructure<TDownloadAnimeUrl> {
   }
 
   async get(animeEpisode: string, type: string): Promise<Response> {
-    const page = await fetch(`${Env.baseUrl}/${type}/${animeEpisode}`);
+    const page = await gofetch({ baseUrl: Env.baseUrl }, `/${type}/${animeEpisode}`);
 
     const anime = this.extractHTML(String(page?.data), type);
 

@@ -3,6 +3,8 @@ import { Exception } from "~/utils";
 
 export default function AsyncError() {
   const error = useAsyncError() as Exception;
+
+  console.error(error);
   const navigate = useNavigate();
 
   return (

@@ -2,7 +2,7 @@ import * as cheerio from "cheerio";
 import { alphabets } from "~/constant";
 import { TAnime, TAnimeLists } from "~/types";
 import { Env } from "~/utils/env";
-import { fetch, Response } from "~/utils";
+import { gofetch, Response } from "~/utils";
 import { AnimeStructure } from "~/structs/AnimeStruct";
 
 export class AnimeList extends AnimeStructure<TAnimeLists[]> {
@@ -45,7 +45,7 @@ export class AnimeList extends AnimeStructure<TAnimeLists[]> {
   }
 
   async get(): Promise<Response> {
-    const page = await fetch(`${Env.baseUrl}/anime-list`);
+    const page = await gofetch({ baseUrl: Env.baseUrl }, `/anime-list`);
 
     if (!page || page.status !== 200) {
       throw new Response(500, "Cant get anime lists");

@@ -1,10 +1,9 @@
-import { DetailAnime } from "./detailAnime";
-import { OngoingAnime } from "./ongoingAnime";
+import { DetailAnime } from "./detail";
+import { OngoingAnime } from "./ongoing";
 import { getStreamAnime } from "./stream";
-import { SearchAnime } from "./searchAnime";
-import { CompletedAnime } from "./completedAnime";
-import { Response } from "~/utils/response";
-import { DownloadAnime } from "./downloadAnime";
-import { AnimeList } from "./animeLists";
+import { SearchAnime } from "./search";
+import { CompletedAnime } from "./completed";
+import { DownloadAnime } from "./download";
+import { AnimeList } from "./lists";
 
-export { DetailAnime, OngoingAnime, getStreamAnime, SearchAnime, CompletedAnime, Response, DownloadAnime, AnimeList };
+export { DetailAnime, OngoingAnime, getStreamAnime, SearchAnime, CompletedAnime, DownloadAnime, AnimeList };

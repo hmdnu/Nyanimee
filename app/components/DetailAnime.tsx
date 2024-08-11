@@ -8,7 +8,7 @@ export default function DetailAnime({ anime }: { anime: TDetailAnime }) {
       <div className="flex lg:flex-col flex-row gap-5 justify-between">
         {/* details */}
         <section className="bg-secondary p-10 rounded-[20px] h-fit flex gap-10">
-          <img src={anime.coverImg} alt={anime.title} className="w-[500px] h-[450px] rounded-[10px]" />
+          <img src={anime.coverImg} alt={anime.title} className="w-[300px] h-[450px] rounded-[10px]" />
 
           <div>
             <h1 className="heading-1">{anime.title}</h1>

@@ -1,7 +1,7 @@
 import { MetaFunction } from "@remix-run/node";
 import { Await, defer, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
-import { AnimeList } from "~/services/animeLists";
+import { AnimeList } from "~/services/lists";
 import { AnimeLists, AsyncError, ListsSkeleton } from "~/components";
 import { TAnimeLists } from "~/types";
 import { Exception, Response } from "~/utils";

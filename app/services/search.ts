@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio";
 import { TBaseAnime } from "~/types";
 import { Env } from "~/utils/env";
-import { fetch, Response } from "~/utils";
+import { gofetch, Response } from "~/utils";
 import { AnimeStructure } from "~/structs/AnimeStruct";
 
 export class SearchAnime extends AnimeStructure<TBaseAnime[]> {
@@ -25,7 +25,7 @@ export class SearchAnime extends AnimeStructure<TBaseAnime[]> {
   }
 
   async get(animeTitle: string): Promise<Response> {
-    const page = await fetch(`${Env.baseUrl}/?s=${animeTitle}&post_type=anime`);
+    const page = await gofetch({ baseUrl: Env.baseUrl }, `/?s=${animeTitle}&post_type=anime`);
 
     const anime = this.extractHTML(page?.data as string);
 

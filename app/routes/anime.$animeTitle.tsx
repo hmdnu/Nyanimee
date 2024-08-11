@@ -29,7 +29,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   }
 
   return defer(
-    { detailAnime, title: title.data as TDetailAnime },
+    { detailAnime, title: (title.data as TDetailAnime).title },
     {
       headers: {
         "Cache-Control": "max-age=" + 60 * 60,

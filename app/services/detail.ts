@@ -50,7 +50,13 @@ export class DetailAnime extends AnimeStructure<TDetailAnime> {
     const res = await gofetch({ baseUrl: Env.jikanUrl }, `/anime?q=${title}&limit=1`);
     const details = (res?.data as { data: TJikanAnime[] }).data[0];
 
-    console.log(res);
+    const genres = $(".infozingle")
+      .find("p")
+      .last()
+      .text()
+      .replace("Genre:", "")
+      .split(",")
+      .filter((genre) => genre.trim());
 
     // populate instances
     detailAnime.title = title;
@@ -59,7 +65,7 @@ export class DetailAnime extends AnimeStructure<TDetailAnime> {
     detailAnime.status = details.status;
     detailAnime.type = details.type;
     detailAnime.synopsis = details.synopsis;
-    details.genres.map((genre) => detailAnime.genres.push({ name: genre.name }));
+    genres.map((genre) => detailAnime.genres.push({ name: genre.trim() }));
     detailAnime.totalEpisode = details.episodes;
     detailAnime.duration = details.duration;
     detailAnime.aired = details.aired.string;

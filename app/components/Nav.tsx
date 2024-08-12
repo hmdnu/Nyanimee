@@ -35,7 +35,7 @@ export default function Nav() {
     <>
       <nav className={`fixed w-full ${navBlur} transition-all z-10`}>
         <div className="w-[90%] mx-auto py-5 flex justify-between items-center">
-          <Link to={"/"} className="heading-1">
+          <Link to={"/"} className="heading-1" prefetch="intent" rel="prefetch">
             Nyanimee
           </Link>
 

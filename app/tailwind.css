@@ -36,7 +36,7 @@ body {
 
 @layer base {
   .heading-1 {
-    @apply font-bold sm:text-[28px] text-[24px];
+    @apply font-bold sm:text-[28px] text-[22px];
   }
 
   .heading-2 {

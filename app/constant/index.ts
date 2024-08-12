@@ -1,3 +1,6 @@
+import download from "~/images/download.png";
+import share from "~/images/share.png";
+
 export const Navlinks = [
   {
     name: "home",
@@ -17,18 +20,8 @@ export const Navlinks = [
   },
 ];
 
-export const AnimeInfos = [
-  { text: "Title" },
-  { text: "Japanese" },
-  { text: "Score" },
-  { text: "Producer" },
-  { text: "Status" },
-  { text: "Total Episode" },
-  { text: "Type" },
-  { text: "Duration" },
-  { text: "Release Date" },
-  { text: "Studio" },
-  { text: "Genres" },
-];
-
+export const Icons = {
+  download,
+  share,
+};
 export const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

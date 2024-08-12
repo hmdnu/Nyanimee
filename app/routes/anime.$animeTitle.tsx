@@ -19,11 +19,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
     if (error instanceof Exception) {
       throw new Response(error.status, error.statusText);
     }
-
-    return null;
   });
 
-  const title = await detailAnime; // Use the resolved `detailAnime` promise directly
+  const title = await detailAnime;
   if (!title) {
     throw new Response(404, "Anime not found");
   }

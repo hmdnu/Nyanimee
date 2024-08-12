@@ -15,7 +15,7 @@ type TCard = {
 export default function Card({ title, href, coverImg, episode, status, totalEpisode, day, score }: TCard) {
   return (
     <div className="bg-secondary-hover hover:bg-secondary transition-all rounded-[5px] w-full h-full flex flex-col justify-center px-2 py-5 mx-auto">
-      <Link to={href.replace(Env.baseUrl, "")}>
+      <Link to={href.replace(Env.baseUrl, "")} prefetch="intent" rel="prefetch">
         <img src={coverImg} alt={title} className="w-[90%] rounded-[5px] mx-auto" />
 
         <div className="pt-5 w-[90%] mx-auto">

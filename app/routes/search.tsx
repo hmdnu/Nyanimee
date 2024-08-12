@@ -14,7 +14,7 @@ export const meta: MetaFunction<typeof loader> = ({ location }) => {
 
 export async function loader({ request }: ActionFunctionArgs) {
   const url = new URL(request.url);
-  const animeTitle = url.searchParams.get("title") || "";
+  const animeTitle = url.searchParams.get("title");
 
   if (!animeTitle) throw new Response(404, "Missing query");
 

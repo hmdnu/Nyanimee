@@ -17,7 +17,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   const title = await new DetailAnime().get(animeTitle);
 
-  const detailAnime = await new DetailAnime().get(animeTitle).catch((error) => {
+  const detailAnime = new DetailAnime().get(animeTitle).catch((error) => {
     if (error instanceof Exception) {
       throw new Response(error.status, error.statusText);
     }
@@ -42,7 +42,7 @@ export default function DetailAnimePage() {
 
   return (
     <div className="base">
-      <Suspense fallback={<div>Loading bro</div>}>
+      <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={detailAnime} errorElement={<AsyncError />}>
           {(detail) => <DetailAnimeComp anime={detail?.data as TDetailAnime} />}
         </Await>

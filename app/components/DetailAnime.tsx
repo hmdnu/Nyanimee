@@ -29,7 +29,7 @@ export default function DetailAnime({ anime }: { anime: TDetailAnime }) {
       <div className="flex flex-col gap-5 justify-between">
         {/* details */}
         <section className="bg-secondary p-10 rounded-[20px] h-fit flex lg:flex-row flex-col md:items-start items-center gap-10 relative">
-          <img src={anime.coverImg} alt={anime.title} className="w-[300px] h-[450px] rounded-[10px]" />
+          <img src={anime.coverImg} alt={anime.title} className="w-[300px] h-[400px] rounded-[10px]" />
 
           <div>
             <h1 className="heading-1 ">{anime.title}</h1>
@@ -42,7 +42,7 @@ export default function DetailAnime({ anime }: { anime: TDetailAnime }) {
 
             <p className="paragraph mt-5">{anime.synopsis}</p>
 
-            <div className="flex gap-2 mt-5">
+            <div className="flex flex-wrap gap-2 mt-5">
               {anime.genres.map((genre, i) => (
                 <div key={i} className="heading-4 bg-tertiary px-3 py-1 rounded-[10px]">
                   {genre.name}

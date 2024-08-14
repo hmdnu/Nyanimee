@@ -4,7 +4,7 @@ import Pagination from "./Pagination";
 import Card from "./Card";
 
 export default function Cards({ animes, totalPage }: { animes: TBaseAnime[]; totalPage: number }) {
-  const [searchParams, setSearchParams] = useSearchParams({ page: String(1) });
+  const [searchParams] = useSearchParams({ page: String(1) });
   const location = useLocation();
 
   const currentPage = Number(searchParams.get("page"));
@@ -32,7 +32,7 @@ export default function Cards({ animes, totalPage }: { animes: TBaseAnime[]; tot
       )}
 
       {location.pathname === "/search" || animes.length < 1 ? null : (
-        <Pagination totalPage={totalPage} currentPage={currentPage} setSearchParams={setSearchParams} maxVisiblePages={4} />
+        <Pagination totalPage={totalPage} currentPage={currentPage} maxVisiblePages={3} />
       )}
     </>
   );

@@ -5,25 +5,25 @@ import { AnimeStructure } from "~/structs/AnimeStruct";
 import { gofetch, Response } from "~/utils";
 
 export class DetailAnime extends AnimeStructure<TDetailAnime> {
+  private detailAnime: TDetailAnime = {
+    title: "",
+    score: 0,
+    type: "",
+    status: "",
+    totalEpisode: 0,
+    duration: "",
+    aired: "",
+    studio: "",
+    genres: [],
+    trailerUrl: "",
+    synopsis: "",
+    rating: "",
+    coverImg: "",
+    episodes: [],
+  };
+
   protected async extractHTML(html: string): Promise<TDetailAnime> {
     const $ = cheerio.load(html);
-
-    const detailAnime: TDetailAnime = {
-      title: "",
-      score: 0,
-      type: "",
-      status: "",
-      totalEpisode: 0,
-      duration: "",
-      aired: "",
-      studio: "",
-      genres: [],
-      trailerUrl: "",
-      synopsis: "",
-      rating: "",
-      coverImg: "",
-      episodes: [],
-    };
 
     // remove unnecesary element
     $(".episodelist:last").remove();
@@ -34,7 +34,7 @@ export class DetailAnime extends AnimeStructure<TDetailAnime> {
       const date = $(e).find(".zeebr").text();
       const href = $(e).find("a").attr("href") || "";
 
-      detailAnime.episodes.push({ episode, date, href });
+      this.detailAnime.episodes.push({ episode, date, href });
     });
 
     // get title and remove value after title
@@ -47,8 +47,12 @@ export class DetailAnime extends AnimeStructure<TDetailAnime> {
     const title = splittedTitle.join(" ");
 
     // get details
-    const res = await gofetch({ baseUrl: Env.jikanUrl }, `/anime?q=${title}&limit=1`);
-    const details = (res?.data as { data: TJikanAnime[] }).data[0];
+    const jikanRes = await gofetch({ baseUrl: Env.jikanUrl }, `/anime?q=${title}`);
+    const details = (jikanRes?.data as { data: TJikanAnime[] }).data.find((anime) => anime.title === title);
+
+    if (!details) {
+      throw new Response(404, "Anime not found");
+    }
 
     const genres = $(".infozingle")
       .find("p")
@@ -59,31 +63,35 @@ export class DetailAnime extends AnimeStructure<TDetailAnime> {
       .filter((genre) => genre.trim());
 
     // populate instances
-    detailAnime.title = title;
-    detailAnime.score = details.score;
-    detailAnime.studio = details.studios[0].name;
-    detailAnime.status = details.status;
-    detailAnime.type = details.type;
-    detailAnime.synopsis = details.synopsis;
-    genres.map((genre) => detailAnime.genres.push({ name: genre.trim() }));
-    detailAnime.totalEpisode = details.episodes;
-    detailAnime.duration = details.duration;
-    detailAnime.aired = details.aired.string;
-    detailAnime.rating = details.rating;
-    detailAnime.trailerUrl = details.trailer.embed_url;
-    detailAnime.coverImg = details.images.jpg.large_image_url;
+    this.detailAnime.title = title;
+    this.detailAnime.score = details.score;
+    this.detailAnime.studio = details.studios[0].name;
+    this.detailAnime.status = details.status;
+    this.detailAnime.type = details.type;
+    this.detailAnime.synopsis = details.synopsis;
+    genres.map((genre) => this.detailAnime.genres.push({ name: genre.trim() }));
+    this.detailAnime.totalEpisode = details.episodes;
+    this.detailAnime.duration = details.duration;
+    this.detailAnime.aired = details.aired.string;
+    this.detailAnime.rating = details.rating;
+    this.detailAnime.trailerUrl = details.trailer.embed_url;
+    this.detailAnime.coverImg = details.images.jpg.large_image_url;
 
-    return detailAnime;
+    return this.detailAnime;
   }
 
   async get(animeTitle: string): Promise<Response> {
-    const page = await gofetch({ baseUrl: Env.baseUrl }, `/anime/${animeTitle}`);
+    const page = await gofetch({ baseUrl: Env.baseUrl }, `/anime/${animeTitle}`).catch((error) => {
+      console.log(error);
+    });
 
     if (!page || page.status !== 200) {
       throw new Response(page?.status, page?.statusText);
     }
 
-    const animes = await this.extractHTML(String(page.data));
+    const animes = await this.extractHTML(String(page.data)).catch((error) => {
+      console.log(error);
+    });
 
     return new Response(200, "ok", animes);
   }

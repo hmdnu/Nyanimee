@@ -23,10 +23,14 @@ export async function loader({ params }: LoaderFunctionArgs) {
       throw new Response(error.status, error.statusText);
     }
   });
-  const title = (await new DownloadAnime().get(animeEpisode, type)).data as TDownloadAnimeUrl;
+  const title = await downloadUrl;
+
+  if (!title) {
+    throw new Response(404, "Cant find title");
+  }
 
   return defer(
-    { downloadUrl, title: title.title },
+    { downloadUrl, title: (title.data as TDownloadAnimeUrl).title },
     {
       headers: {
         "Cache-Control": "max-age=" + 60 * 60,

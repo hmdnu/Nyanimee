@@ -15,15 +15,16 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   if (!animeTitle) throw new Response(404, "Query not found");
 
-  const detailAnime = new DetailAnime().get(animeTitle).catch((error) => {
+  const title = await new DetailAnime().get(animeTitle);
+
+  const detailAnime = await new DetailAnime().get(animeTitle).catch((error) => {
     if (error instanceof Exception) {
       throw new Response(error.status, error.statusText);
     }
   });
 
-  const title = await detailAnime;
   if (!title) {
-    throw new Response(404, "Anime not found");
+    throw new Response(404, "Cant find title");
   }
 
   return defer(
@@ -41,13 +42,11 @@ export default function DetailAnimePage() {
 
   return (
     <div className="base">
-      {
-        <Suspense fallback={<div>Loading bro</div>}>
-          <Await resolve={detailAnime} errorElement={<AsyncError />}>
-            {(detail) => <DetailAnimeComp anime={detail?.data as TDetailAnime} />}
-          </Await>
-        </Suspense>
-      }
+      <Suspense fallback={<div>Loading bro</div>}>
+        <Await resolve={detailAnime} errorElement={<AsyncError />}>
+          {(detail) => <DetailAnimeComp anime={detail?.data as TDetailAnime} />}
+        </Await>
+      </Suspense>
     </div>
   );
 }

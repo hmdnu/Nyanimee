@@ -46,26 +46,28 @@ export default function Index() {
         <Suspense fallback={<CardSkeleton totalCards={5} />}>
           <Await resolve={ongoingAnime} errorElement={<AsyncError />}>
             {(animes) => (
-              <Carousel>
-                {(animes.data as TBaseAnime[]).map((anime) => (
-                  <Card
-                    key={anime.title}
-                    title={anime.title}
-                    coverImg={anime.coverImg}
-                    href={anime.href}
-                    day={anime.day}
-                    episode={anime.episode}
-                    score={anime.score}
-                    status={anime.status}
-                    totalEpisode={anime.totalEpisode}
-                  />
-                ))}
-              </Carousel>
+              <>
+                <Carousel>
+                  {(animes.data as TBaseAnime[]).map((anime) => (
+                    <Card
+                      key={anime.title}
+                      title={anime.title}
+                      coverImg={anime.coverImg}
+                      href={anime.href}
+                      day={anime.day}
+                      episode={anime.episode}
+                      score={anime.score}
+                      status={anime.status}
+                      totalEpisode={anime.totalEpisode}
+                    />
+                  ))}
+                </Carousel>
+                <Link to={"/ongoing"} className="flex w-full justify-center">
+                  <span className="px-4 py-2 heading-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-600 rounded-[10px] transition">See more</span>
+                </Link>
+              </>
             )}
           </Await>
-          <Link to={"/ongoing"} className="flex w-full justify-center">
-            <span className="px-4 py-2 heading-3 bg-blue-600 hover:bg-blue-700 rounded-[10px] transition">See more</span>
-          </Link>
         </Suspense>
       </section>
 
@@ -74,26 +76,28 @@ export default function Index() {
         <Suspense fallback={<CardSkeleton totalCards={5} />}>
           <Await resolve={completedAnime} errorElement={<AsyncError />}>
             {(animes) => (
-              <Carousel>
-                {(animes.data as TCompletedAnime).completedAnimes.map((anime) => (
-                  <Card
-                    key={anime.title}
-                    title={anime.title}
-                    coverImg={anime.coverImg}
-                    href={anime.href}
-                    day={anime.day}
-                    episode={anime.episode}
-                    score={anime.score}
-                    status={anime.status}
-                    totalEpisode={anime.totalEpisode}
-                  />
-                ))}
-              </Carousel>
+              <>
+                <Carousel>
+                  {(animes.data as TCompletedAnime).completedAnimes.map((anime) => (
+                    <Card
+                      key={anime.title}
+                      title={anime.title}
+                      coverImg={anime.coverImg}
+                      href={anime.href}
+                      day={anime.day}
+                      episode={anime.episode}
+                      score={anime.score}
+                      status={anime.status}
+                      totalEpisode={anime.totalEpisode}
+                    />
+                  ))}
+                </Carousel>
+                <Link to={"/completed"} className="flex w-full justify-center mt-3">
+                  <span className="px-4 py-2 heading-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-600 rounded-[10px] transition">See more</span>
+                </Link>
+              </>
             )}
           </Await>
-          <Link to={"/completed"} className="flex w-full justify-center mt-3">
-            <span className="px-4 py-2 heading-3 bg-blue-600 hover:bg-blue-700 rounded-[10px] transition">See more</span>
-          </Link>
         </Suspense>
       </section>
     </div>

@@ -19,7 +19,7 @@ export default function AsyncError() {
 
         <button
           className="bg-green-500 hover:bg-green-700 transition-all px-4 py-2 heading-4 rounded-[10px]"
-          onClick={() => navigate(".", { replace: true })}
+          onClick={() => window.location.reload()}
         >
           Refresh
         </button>

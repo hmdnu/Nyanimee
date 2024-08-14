@@ -68,14 +68,7 @@ export default function Nav() {
         <div id="mobile-nav" className="h-screen w-[100%] bg-[rgba(0,0,0,0.5)] backdrop-blur-sm fixed z-20">
           <div className="bg-tertiary p-5 absolute right-5 top-24 rounded-[10px]">
             {Navlinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.url}
-                className="heading-3 hover:underline flex mb-1"
-                prefetch="intent"
-                rel="prefetch"
-                onClick={handleToggleNav}
-              >
+              <Link key={link.name} to={link.url} className="heading-3 hover:underline flex mb-1" prefetch="intent" rel="prefetch" reloadDocument>
                 {link.name}
               </Link>
             ))}

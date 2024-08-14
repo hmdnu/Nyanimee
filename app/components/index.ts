@@ -9,5 +9,19 @@ import AsyncError from "./AsyncError";
 import ErrorComponent from "./ErrorComponent";
 import DownloadAnime from "./DownloadAnime";
 import Carousel from "./Carousel";
+import GenreCards from "./GenreCards";
 
-export { Nav, DetailAnime, Pagination, CardSkeleton, AnimeLists, ListsSkeleton, Cards, AsyncError, ErrorComponent, DownloadAnime, Carousel };
+export {
+  Nav,
+  DetailAnime,
+  Pagination,
+  CardSkeleton,
+  AnimeLists,
+  ListsSkeleton,
+  Cards,
+  AsyncError,
+  ErrorComponent,
+  DownloadAnime,
+  Carousel,
+  GenreCards,
+};

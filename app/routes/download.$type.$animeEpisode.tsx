@@ -17,13 +17,13 @@ export async function loader({ params }: LoaderFunctionArgs) {
   if (!animeEpisode || !type) {
     throw new Response(404, "Missing query");
   }
+  const title = await new DownloadAnime().get(animeEpisode, type);
 
   const downloadUrl = new DownloadAnime().get(animeEpisode, type).catch((error) => {
     if (error instanceof Exception) {
       throw new Response(error.status, error.statusText);
     }
   });
-  const title = await downloadUrl;
 
   if (!title) {
     throw new Response(404, "Cant find title");

@@ -92,3 +92,8 @@ export type TJikanAnime = {
 type TJikanAnimeGenre = {
   name: string;
 };
+
+export type TGenre = {
+  name: string;
+  href: string;
+};

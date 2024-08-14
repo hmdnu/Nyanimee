@@ -12,7 +12,7 @@ export const Navlinks = [
   },
   {
     name: "genre",
-    url: "/genre",
+    url: "/genres",
   },
   {
     name: "schedule",

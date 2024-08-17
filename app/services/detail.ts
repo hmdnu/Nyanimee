@@ -48,7 +48,9 @@ export class DetailAnime extends AnimeStructure<TDetailAnime> {
 
     // get details
     const jikanRes = await gofetch({ baseUrl: Env.jikanUrl }, `/anime?q=${title}`);
-    const details = (jikanRes?.data as { data: TJikanAnime[] }).data.find((anime) => anime.title === title);
+
+    const details =
+      (jikanRes?.data as { data: TJikanAnime[] }).data.find((anime) => anime.title === title) || (jikanRes?.data as { data: TJikanAnime[] }).data[0];
 
     if (!details) {
       throw new Response(404, "Anime not found");

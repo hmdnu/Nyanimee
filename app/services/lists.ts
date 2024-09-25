@@ -44,7 +44,7 @@ export class AnimeList extends AnimeStructure<TAnimeLists[]> {
     return sortedList;
   }
 
-  async get(): Promise<Response> {
+  async get(): Promise<Response<TAnimeLists[]>> {
     const page = await gofetch({ baseUrl: Env.baseUrl }, `/anime-list`);
 
     if (!page || page.status !== 200) {

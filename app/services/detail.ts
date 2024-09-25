@@ -1,26 +1,16 @@
 import * as cheerio from "cheerio";
-import { Env } from "~/utils/env";
-import { TDetailAnime, TJikanAnime } from "~/types";
+import { TEnv } from "~/utils/env";
+import { TDetailAnime, TDetailAnimeEpisodes, TJikanAnime } from "~/types";
 import { AnimeStructure } from "~/structs/AnimeStruct";
 import { gofetch, Response } from "~/utils";
 
 export class DetailAnime extends AnimeStructure<TDetailAnime> {
-  private detailAnime: TDetailAnime = {
-    title: "",
-    score: 0,
-    type: "",
-    status: "",
-    totalEpisode: 0,
-    duration: "",
-    aired: "",
-    studio: "",
-    genres: [],
-    trailerUrl: "",
-    synopsis: "",
-    rating: "",
-    coverImg: "",
-    episodes: [],
-  };
+  #env: TEnv;
+
+  constructor(env: TEnv) {
+    super();
+    this.#env = env;
+  }
 
   protected async extractHTML(html: string): Promise<TDetailAnime> {
     const $ = cheerio.load(html);
@@ -28,13 +18,20 @@ export class DetailAnime extends AnimeStructure<TDetailAnime> {
     // remove unnecesary element
     $(".episodelist:last").remove();
 
+    const episodes: TDetailAnimeEpisodes[] = [
+      {
+        episode: "",
+        date: "",
+        href: "",
+      },
+    ];
     // populate episodes
     $(".episodelist ul li").each((_, e) => {
       const episode = $(e).find("a").text();
       const date = $(e).find(".zeebr").text();
       const href = $(e).find("a").attr("href") || "";
 
-      this.detailAnime.episodes.push({ episode, date, href });
+      episodes.push({ episode, date, href });
     });
 
     // get title and remove value after title
@@ -47,10 +44,10 @@ export class DetailAnime extends AnimeStructure<TDetailAnime> {
     const title = splittedTitle.join(" ");
 
     // get details
-    const jikanRes = await gofetch({ baseUrl: Env.jikanUrl }, `/anime?q=${title}`);
+    const jikan = await gofetch({ baseUrl: this.#env.jikanUrl }, `/anime?q=${title}`);
+    const res = jikan?.data as { data: TJikanAnime[] };
 
-    const details =
-      (jikanRes?.data as { data: TJikanAnime[] }).data.find((anime) => anime.title === title) || (jikanRes?.data as { data: TJikanAnime[] }).data[0];
+    const details = res.data.find((anime) => anime.title === title) || res.data[0];
 
     if (!details) {
       throw new Response(404, "Anime not found");
@@ -62,28 +59,32 @@ export class DetailAnime extends AnimeStructure<TDetailAnime> {
       .text()
       .replace("Genre:", "")
       .split(",")
-      .filter((genre) => genre.trim());
+      .map((genre) => genre.trim());
 
     // populate instances
-    this.detailAnime.title = title;
-    this.detailAnime.score = details.score;
-    this.detailAnime.studio = details.studios[0].name;
-    this.detailAnime.status = details.status;
-    this.detailAnime.type = details.type;
-    this.detailAnime.synopsis = details.synopsis;
-    genres.map((genre) => this.detailAnime.genres.push({ name: genre.trim() }));
-    this.detailAnime.totalEpisode = details.episodes;
-    this.detailAnime.duration = details.duration;
-    this.detailAnime.aired = details.aired.string;
-    this.detailAnime.rating = details.rating;
-    this.detailAnime.trailerUrl = details.trailer.embed_url;
-    this.detailAnime.coverImg = details.images.jpg.large_image_url;
+    const animeGenre: { name: string }[] = [];
+    genres.map((genre) => animeGenre.push({ name: genre.trim() }));
 
-    return this.detailAnime;
+    return {
+      title: title,
+      score: details.score,
+      studio: details.studios[0].name,
+      status: details.status,
+      type: details.type,
+      synopsis: details.synopsis,
+      genres: animeGenre,
+      totalEpisode: details.episodes,
+      duration: details.duration,
+      aired: details.aired.string,
+      rating: details.rating,
+      trailerUrl: details.trailer.embed_url,
+      coverImg: details.images.jpg.large_image_url,
+      episodes,
+    };
   }
 
-  async get(animeTitle: string): Promise<Response> {
-    const page = await gofetch({ baseUrl: Env.baseUrl }, `/anime/${animeTitle}`).catch((error) => {
+  async get<T>(animeTitle: string): Promise<Response<T>> {
+    const page = await gofetch({ baseUrl: this.#env.baseUrl }, `/anime/${animeTitle}`).catch((error) => {
       console.log(error);
     });
 
@@ -95,6 +96,6 @@ export class DetailAnime extends AnimeStructure<TDetailAnime> {
       console.log(error);
     });
 
-    return new Response(200, "ok", animes);
+    return new Response<T>(200, "ok", animes as T);
   }
 }

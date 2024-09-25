@@ -28,7 +28,7 @@ export class OngoingAnime extends AnimeStructure<TBaseAnime[]> {
     return ongoingAnimes;
   }
 
-  async get(query: string): Promise<Response> {
+  async get(query: string): Promise<Response<TBaseAnime[]>> {
     const page = await gofetch({ baseUrl: Env.baseUrl }, `/ongoing-anime/page/${query}`);
 
     if (!page || page.status !== 200) {

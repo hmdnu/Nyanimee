@@ -5,7 +5,7 @@ type BaseUrl = {
   baseUrl: string;
 };
 
-export async function gofetch(baseUrl: string | BaseUrl, url?: string): Promise<Response | undefined> {
+export async function gofetch<T>(baseUrl: string | BaseUrl, url?: string): Promise<Response<T> | undefined> {
   try {
     const base = (baseUrl as BaseUrl).baseUrl || baseUrl;
 

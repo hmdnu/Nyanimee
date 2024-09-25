@@ -30,7 +30,7 @@ export class CompletedAnime extends AnimeStructure<TCompletedAnime> {
     return { lastPagination, completedAnimes };
   }
 
-  async get(query: string): Promise<Response> {
+  async get(query: string): Promise<Response<TCompletedAnime>> {
     const page = await gofetch({ baseUrl: Env.baseUrl }, `/complete-anime/page/${query}`);
 
     if (!page || page.status !== 200) {

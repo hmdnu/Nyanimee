@@ -36,7 +36,7 @@ export class DownloadAnime extends AnimeStructure<TDownloadAnimeUrl> {
     return downloadUrl;
   }
 
-  async get(animeEpisode: string, type: string): Promise<Response> {
+  async get(animeEpisode: string, type: string): Promise<Response<TDownloadAnimeUrl>> {
     const page = await gofetch({ baseUrl: Env.baseUrl }, `/${type}/${animeEpisode}`);
 
     const anime = this.extractHTML(String(page?.data), type);

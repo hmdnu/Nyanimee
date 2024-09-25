@@ -1,14 +1,22 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { defer, useLoaderData } from "@remix-run/react";
+import { Genres } from "~/services";
+import { Response } from "~/utils";
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  console.log(params);
+  if (!params) {
+    throw new Response(404, "Param not found");
+  }
 
-  return defer({ params });
+  const animes = await new Genres().getAnimeByGenre(String(params.name));
+
+  return defer({ animes });
 }
 
 export default function GenrePage() {
-  const { params } = useLoaderData<typeof loader>();
+  const { animes } = useLoaderData<typeof loader>();
 
-  return <div className="base">{params.name}</div>;
+  console.log(animes);
+
+  return <div className="base">{""}</div>;
 }

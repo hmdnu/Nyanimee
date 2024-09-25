@@ -27,8 +27,8 @@ export function ErrorBoundary() {
 
   if (isRouteErrorResponse(error)) {
     return <ErrorComponent status={error.status} statusText={error.statusText} />;
-  } else if (error as Exception) {
-    return <ErrorComponent status={Number((error as Exception).status)} statusText={(error as Exception).statusText!} />;
+  } else if (error instanceof Exception) {
+    return <ErrorComponent status={error.status as number} statusText={error.statusText as string} />;
   } else {
     return <ErrorComponent status={500} statusText={"Internal server error"} />;
   }

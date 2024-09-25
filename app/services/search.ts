@@ -24,7 +24,7 @@ export class SearchAnime extends AnimeStructure<TBaseAnime[]> {
     return animes;
   }
 
-  async get(animeTitle: string): Promise<Response> {
+  async get(animeTitle: string): Promise<Response<TBaseAnime[]>> {
     const page = await gofetch({ baseUrl: Env.baseUrl }, `/?s=${animeTitle}&post_type=anime`);
 
     const anime = this.extractHTML(page?.data as string);
